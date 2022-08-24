@@ -1,4 +1,5 @@
 import { Fragment, PropsWithChildren, useState } from 'react';
+import Link from 'next/link';
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react';
 import {
   MenuIcon,
@@ -259,14 +260,16 @@ export default function Layout({ children }: PropsWithChildren) {
               <div className="h-16 flex items-center justify-between">
                 {/* Logo (lg+) */}
                 <div className="hidden lg:flex-1 lg:flex lg:items-center">
-                  <a href="#">
-                    <span className="sr-only">Workflow</span>
-                    <img
-                      className="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                      alt=""
-                    />
-                  </a>
+                  <Link href="/">
+                    <a>
+                      <span className="sr-only">Workflow</span>
+                      <img
+                        className="h-8 w-auto"
+                        src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
+                        alt=""
+                      />
+                    </a>
+                  </Link>
                 </div>
 
                 <div className="hidden h-full lg:flex">
@@ -403,22 +406,23 @@ export default function Layout({ children }: PropsWithChildren) {
                 </div>
 
                 {/* Logo (lg-) */}
-                <a href="#" className="lg:hidden">
-                  <span className="sr-only">Workflow</span>
-                  <img
-                    src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                    alt=""
-                    className="h-8 w-auto"
-                  />
-                </a>
+                <Link href="/">
+                  <a className="lg:hidden">
+                    <span className="sr-only">Workflow</span>
+                    <img
+                      src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
+                      alt=""
+                      className="h-8 w-auto"
+                    />
+                  </a>
+                </Link>
 
                 <div className="flex-1 flex items-center justify-end">
-                  <a
-                    href="#"
-                    className="hidden text-sm font-medium text-gray-700 hover:text-gray-800 lg:block"
-                  >
-                    Search
-                  </a>
+                  <Link href="/search">
+                    <a className="hidden text-sm font-medium text-gray-700 hover:text-gray-800 lg:block">
+                      Search
+                    </a>
+                  </Link>
 
                   <div className="flex items-center lg:ml-8">
                     {/* Help */}
