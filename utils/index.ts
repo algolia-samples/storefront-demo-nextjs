@@ -1,1 +1,1 @@
-export * from './classNames';
+export * from './cx';

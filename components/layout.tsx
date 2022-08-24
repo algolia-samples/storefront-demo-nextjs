@@ -9,7 +9,7 @@ import {
   XIcon,
 } from '@heroicons/react/outline';
 
-import { classNames } from '../utils';
+import { cx } from '../utils';
 import { currencies, navigation, footerNavigation, perks } from '../mock';
 
 export default function Layout({ children }: PropsWithChildren) {
@@ -66,7 +66,7 @@ export default function Layout({ children }: PropsWithChildren) {
                         <Tab
                           key={category.name}
                           className={({ selected }) =>
-                            classNames(
+                            cx(
                               selected
                                 ? 'text-indigo-600 border-indigo-600'
                                 : 'text-gray-900 border-transparent',
@@ -282,7 +282,7 @@ export default function Layout({ children }: PropsWithChildren) {
                             <>
                               <div className="relative flex">
                                 <Popover.Button
-                                  className={classNames(
+                                  className={cx(
                                     open
                                       ? 'text-indigo-600'
                                       : 'text-gray-700 hover:text-gray-800',
@@ -291,7 +291,7 @@ export default function Layout({ children }: PropsWithChildren) {
                                 >
                                   {category.name}
                                   <span
-                                    className={classNames(
+                                    className={cx(
                                       open ? 'bg-indigo-600' : '',
                                       'absolute z-20 -bottom-px inset-x-0 h-0.5 transition ease-out duration-200'
                                     )}
@@ -321,7 +321,7 @@ export default function Layout({ children }: PropsWithChildren) {
                                     aria-hidden="true"
                                   >
                                     <div
-                                      className={classNames(
+                                      className={cx(
                                         open ? 'bg-gray-200' : 'bg-transparent',
                                         'w-full h-px transition-colors ease-out duration-200'
                                       )}

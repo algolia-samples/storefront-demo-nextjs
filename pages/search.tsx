@@ -4,7 +4,7 @@ import { Dialog, Disclosure, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { ChevronDownIcon, PlusSmIcon } from '@heroicons/react/solid';
 
-import { classNames } from '../utils';
+import { cx } from '../utils';
 import { breadcrumbs, filters, products } from '../mock';
 
 export default function Search() {
@@ -77,7 +77,7 @@ export default function Search() {
                               </span>
                               <span className="ml-6 h-7 flex items-center">
                                 <ChevronDownIcon
-                                  className={classNames(
+                                  className={cx(
                                     open ? '-rotate-180' : 'rotate-0',
                                     'h-5 w-5 transform'
                                   )}
