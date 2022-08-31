@@ -144,28 +144,27 @@ export const perks = [
 
 /* Home */
 
-export const collections = [
+export const categories = [
   {
-    name: "Women's",
+    name: 'Cell Phones & Smartphones',
     href: '#',
     imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/home-page-04-collection-01.jpg',
-    imageAlt: 'Woman wearing a comfortable cotton t-shirt.',
+      'https://d28i4xct2kl5lp.cloudfront.net/product_images/77187_696a218d-6e0f-4d3e-97e0-cee42f0e4df1.jpg',
+    className: 'translate-y-8',
   },
   {
-    name: "Men's",
+    name: 'Computers & Laptops',
     href: '#',
     imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/home-page-04-collection-02.jpg',
-    imageAlt: 'Man wearing a comfortable and casual cotton t-shirt.',
+      'https://d28i4xct2kl5lp.cloudfront.net/product_images/96913_04d45056-f8cc-4297-a19b-acb354119abc.jpg',
+    className: '-translate-y-12',
   },
   {
-    name: 'Desk Accessories',
+    name: 'Headsets & Earphones',
     href: '#',
     imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/home-page-04-collection-03.jpg',
-    imageAlt:
-      'Person sitting at a wooden desk with paper note organizer, pencil and tablet.',
+      'https://d28i4xct2kl5lp.cloudfront.net/product_images/30420_14eb0905-e5f7-4be3-b9ea-e5016a139790.jpg',
+    className: 'translate-y-8',
   },
 ];
 

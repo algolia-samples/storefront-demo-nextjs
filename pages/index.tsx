@@ -1,6 +1,9 @@
 import Head from 'next/head';
+import Image from 'next/image';
 
-import { collections, trendingProducts } from '../mock';
+import { categories, trendingProducts } from '../mock';
+import heroImage from '../public/images/mark-chan-489jbTi51sg-unsplash-optimized.jpg';
+import { cx } from '../utils';
 
 export default function Home() {
   return (
@@ -18,12 +21,13 @@ export default function Home() {
           aria-hidden="true"
           className="hidden absolute inset-0 sm:flex sm:flex-col"
         >
-          <div className="flex-1 relative w-full bg-gray-800">
+          <div className="flex-1 relative w-full bg-black">
             <div className="absolute inset-0 overflow-hidden">
-              <img
-                src="https://tailwindui.com/img/ecommerce-images/home-page-04-hero-full-width.jpg"
+              <Image
+                src={heroImage}
                 alt=""
                 className="w-full h-full object-center object-cover"
+                layout="fill"
               />
             </div>
             <div className="absolute inset-0 bg-gray-900 opacity-50" />
@@ -37,12 +41,13 @@ export default function Home() {
             aria-hidden="true"
             className="absolute inset-0 flex flex-col sm:hidden"
           >
-            <div className="flex-1 relative w-full bg-gray-800">
+            <div className="flex-1 relative w-full bg-black">
               <div className="absolute inset-0 overflow-hidden">
-                <img
-                  src="https://tailwindui.com/img/ecommerce-images/home-page-04-hero-full-width.jpg"
+                <Image
+                  src={heroImage}
                   alt=""
                   className="w-full h-full object-center object-cover"
+                  layout="fill"
                 />
               </div>
               <div className="absolute inset-0 bg-gray-900 opacity-50" />
@@ -51,14 +56,14 @@ export default function Home() {
           </div>
           <div className="relative py-32">
             <h1 className="text-4xl font-bold tracking-tight text-white sm:tracking-tight sm:text-5xl md:tracking-tight md:text-6xl">
-              Mid-Season Sale
+              Back-to-School Sale
             </h1>
             <div className="mt-4 sm:mt-6">
               <a
                 href="#"
-                className="inline-block bg-indigo-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-indigo-700"
+                className="inline-block bg-white border border-transparent rounded-md py-3 px-8 font-medium text-black"
               >
-                Shop Collection
+                Browse now
               </a>
             </div>
           </div>
@@ -69,13 +74,13 @@ export default function Home() {
           className="-mt-96 relative sm:mt-0"
         >
           <h2 id="collection-heading" className="sr-only">
-            Collections
+            Categories
           </h2>
           <div className="max-w-md mx-auto grid grid-cols-1 gap-y-6 px-4 sm:max-w-7xl sm:px-6 sm:grid-cols-3 sm:gap-y-0 sm:gap-x-6 lg:px-8 lg:gap-x-8">
-            {collections.map((collection) => (
+            {categories.map((collection) => (
               <div
                 key={collection.name}
-                className="group relative h-96 bg-white rounded-lg shadow-xl sm:h-auto sm:aspect-w-4 sm:aspect-h-5"
+                className="group relative h-32 bg-white rounded-lg shadow-xl sm:h-auto aspect-w-16 aspect-h-9"
               >
                 <div>
                   <div
@@ -83,10 +88,15 @@ export default function Home() {
                     className="absolute inset-0 rounded-lg overflow-hidden"
                   >
                     <div className="absolute inset-0 overflow-hidden group-hover:opacity-75">
-                      <img
+                      <Image
                         src={collection.imageSrc}
-                        alt={collection.imageAlt}
-                        className="w-full h-full object-center object-cover"
+                        alt=""
+                        className={cx(
+                          'w-auto h-full object-center object-fit group-hover:scale-110 transition-transform',
+                          collection.className
+                        )}
+                        width={500}
+                        height={500}
                       />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50" />
@@ -94,7 +104,7 @@ export default function Home() {
                   <div className="absolute inset-0 rounded-lg p-6 flex items-end">
                     <div>
                       <p aria-hidden="true" className="text-sm text-white">
-                        Shop the collection
+                        Discover
                       </p>
                       <h3 className="mt-1 font-semibold text-white">
                         <a href={collection.href}>
@@ -124,7 +134,7 @@ export default function Home() {
               href="#"
               className="hidden text-sm font-medium text-indigo-600 hover:text-indigo-500 md:block"
             >
-              Shop the collection<span aria-hidden="true"> &rarr;</span>
+              Browse now<span aria-hidden="true"> &rarr;</span>
             </a>
           </div>
 
@@ -157,7 +167,7 @@ export default function Home() {
               href="#"
               className="font-medium text-indigo-600 hover:text-indigo-500"
             >
-              Shop the collection<span aria-hidden="true"> &rarr;</span>
+              Browse now<span aria-hidden="true"> &rarr;</span>
             </a>
           </div>
         </div>
