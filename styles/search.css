@@ -1,3 +1,29 @@
+.ais-CurrentRefinements {
+  @apply relative;
+  @apply before:content-[''] before:absolute before:w-4 before:h-full before:bg-gradient-to-r before:from-gray-100;
+  @apply after:content-[''] after:absolute after:w-4 after:h-full after:top-0 after:right-0 after:bg-gradient-to-l after:from-gray-100;
+
+  .ais-CurrentRefinements-list {
+    @apply flex space-x-4 px-4 pb-4 sm:py-4 overflow-auto;
+
+    &--noRefinement {
+      @apply p-0 sm:mt-0.5 sm:h-16;
+    }
+  }
+
+  .ais-CurrentRefinements-item {
+    @apply flex flex-shrink-0 rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900;
+  }
+
+  .ais-CurrentRefinements-categoryLabel {
+    @apply ml-2 font-normal text-gray-700;
+  }
+
+  .ais-CurrentRefinements-delete {
+    @apply ml-1 inline-flex items-center w-4 h-4 flex-shrink-0 rounded-full p-1 hover:!bg-gray-200 text-xs text-gray-400 hover:text-gray-500;
+  }
+}
+
 .ais-InfiniteHits {
   .ais-InfiniteHits-list {
     @apply grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3;

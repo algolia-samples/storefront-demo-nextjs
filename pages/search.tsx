@@ -6,6 +6,7 @@ import { PlusSmIcon } from '@heroicons/react/solid';
 
 import {
   Configure,
+  CurrentRefinements,
   InfiniteHits,
   InstantSearch,
   RangeInput,
@@ -23,6 +24,13 @@ const searchClient = algoliasearch(
   'latency',
   'b9df6a359f9fd849b653ee9e779775be'
 );
+
+const FILTER_LABEL_MAP: Record<string, string> = {
+  available_sizes: 'Size',
+  brand: 'Brand',
+  'color.original_name': 'Color',
+  'price.value': 'Price',
+};
 
 function Filters({ type }: Pick<FilterProps, 'type'>) {
   return (
@@ -187,7 +195,7 @@ export default function Search() {
         </div>
 
         <div className="max-w-2xl mx-auto px-4 lg:max-w-7xl lg:px-8">
-          <div className="border-b border-gray-200 pt-24 pb-10">
+          <div className="pt-24 pb-10">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">
               Back-to-School Sale
             </h1>
@@ -195,7 +203,30 @@ export default function Search() {
               Better than ever, and up to 30% off!
             </p>
           </div>
+        </div>
 
+        {/* Active filters */}
+        <div className="bg-gray-100 border-t border-gray-200">
+          <div className="mx-auto max-w-7xl sm:flex sm:items-center sm:px-6 lg:px-8">
+            <h3 className="text-sm px-4 py-3 sm:p-0 flex-shrink-0 font-medium text-gray-500">
+              Active filters
+            </h3>
+            <div
+              aria-hidden="true"
+              className="hidden h-5 w-px bg-gray-300 sm:ml-4 sm:block"
+            ></div>
+            <CurrentRefinements
+              transformItems={(items) =>
+                items.map((item) => ({
+                  ...item,
+                  label: FILTER_LABEL_MAP[item.label] || item.label,
+                }))
+              }
+            />
+          </div>
+        </div>
+
+        <div className="mx-w-2xl mx-auto px-4 lg:max-w-7xl lg:px-8">
           <div className="pt-12 pb-24 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
             <aside>
               <h2 className="sr-only">Filters</h2>
