@@ -1,8 +1,8 @@
 import { Fragment, useState } from 'react';
 import Head from 'next/head';
 import { Dialog, Disclosure, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
-import { ChevronDownIcon, PlusSmIcon } from '@heroicons/react/solid';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, PlusIcon } from '@heroicons/react/24/solid';
 
 import { cx } from '../utils';
 import { breadcrumbs, filters, products } from '../mock';
@@ -56,7 +56,7 @@ export default function Search() {
                     onClick={() => setMobileFiltersOpen(false)}
                   >
                     <span className="sr-only">Close menu</span>
-                    <XIcon className="h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
 
@@ -188,7 +188,7 @@ export default function Search() {
               onClick={() => setMobileFiltersOpen(true)}
             >
               <span className="text-sm font-medium text-gray-700">Filters</span>
-              <PlusSmIcon
+              <PlusIcon
                 className="flex-shrink-0 ml-1 h-5 w-5 text-gray-400"
                 aria-hidden="true"
               />

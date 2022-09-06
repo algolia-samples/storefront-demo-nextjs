@@ -1,19 +1,132 @@
-import { Fragment, PropsWithChildren, useState } from 'react';
+import React, { Fragment, PropsWithChildren, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react';
 import {
-  MenuIcon,
-  QuestionMarkCircleIcon,
-  SearchIcon,
+  ClockIcon,
+  Bars3Icon,
   ShoppingBagIcon,
-  XIcon,
-} from '@heroicons/react/outline';
+  XMarkIcon,
+  MagnifyingGlassIcon,
+  ArrowUpLeftIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
+import { createQuerySuggestionsPlugin } from '@algolia/autocomplete-plugin-query-suggestions';
+import { createLocalStorageRecentSearchesPlugin } from '@algolia/autocomplete-plugin-recent-searches';
+import algoliasearch from 'algoliasearch';
 
 import { cx } from '../utils';
 import { currencies, navigation, footerNavigation, perks } from '../mock';
+import { Autocomplete } from './Autocomplete';
+import { AutocompleteItem } from './AutocompleteItem';
+
+const appId = 'latency';
+const apiKey = '6be0576ff61c053d5f9a3225e2a90f76';
+const searchClient = algoliasearch(appId, apiKey);
 
 export default function Layout({ children }: PropsWithChildren) {
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const recentSearchesPlugin = useRef(
+    createLocalStorageRecentSearchesPlugin({
+      key: 'RECENT_SEARCH',
+      limit: 5,
+      transformSource({ source, onTapAhead, onRemove }) {
+        return {
+          ...source,
+          templates: {
+            item({ item, components }) {
+              return (
+                <AutocompleteItem
+                  router={router}
+                  href={`/search/?query=${item.label}`}
+                >
+                  <AutocompleteItem.Content>
+                    <AutocompleteItem.Icon icon={ClockIcon} />
+                    <span>
+                      <components.ReverseHighlight
+                        hit={item}
+                        attribute="label"
+                      />
+                    </span>
+                  </AutocompleteItem.Content>
+                  <AutocompleteItem.Actions>
+                    <AutocompleteItem.Action
+                      icon={TrashIcon}
+                      title="Remove this search"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        onRemove(item.label);
+                      }}
+                    />
+                    <AutocompleteItem.Action
+                      icon={ArrowUpLeftIcon}
+                      title={`Fill query with "${item.label}"`}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        onTapAhead(item);
+                      }}
+                    />
+                  </AutocompleteItem.Actions>
+                </AutocompleteItem>
+              );
+            },
+          },
+        };
+      },
+    })
+  );
+  const querySuggestionsPluginRef = useRef(
+    createQuerySuggestionsPlugin({
+      searchClient,
+      indexName: 'instant_search_demo_query_suggestions',
+      transformSource({ source, onTapAhead }) {
+        return {
+          ...source,
+          getItemUrl({ item }) {
+            return `/search/?query=${item.query}`;
+          },
+          templates: {
+            ...source.templates,
+            item({ item, components }) {
+              return (
+                <AutocompleteItem
+                  router={router}
+                  href={`/search/?query=${item.query}`}
+                >
+                  <AutocompleteItem.Content>
+                    <AutocompleteItem.Icon icon={MagnifyingGlassIcon} />
+                    <span>
+                      <components.ReverseHighlight
+                        hit={item}
+                        attribute="query"
+                      />
+                    </span>
+                  </AutocompleteItem.Content>
+                  <AutocompleteItem.Actions>
+                    <AutocompleteItem.Action
+                      icon={ArrowUpLeftIcon}
+                      title={`Fill query with "${item.query}"`}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        onTapAhead(item);
+                      }}
+                    />
+                  </AutocompleteItem.Actions>
+                </AutocompleteItem>
+              );
+            },
+          },
+        };
+      },
+    })
+  );
 
   return (
     <div className="bg-white">
@@ -54,7 +167,7 @@ export default function Layout({ children }: PropsWithChildren) {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <span className="sr-only">Close menu</span>
-                    <XIcon className="h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
 
@@ -259,129 +372,133 @@ export default function Layout({ children }: PropsWithChildren) {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="h-16 flex items-center justify-between">
                 {/* Logo (lg+) */}
-                <div className="hidden lg:flex-1 lg:flex lg:items-center">
-                  <Link href="/">
-                    <a>
-                      <span className="sr-only">Workflow</span>
-                      <img
-                        className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                        alt=""
-                      />
-                    </a>
-                  </Link>
-                </div>
+                <div className="hidden h-full lg:flex lg:items-center">
+                  <div className="hidden lg:flex-1 lg:flex lg:items-center mr-4">
+                    <Link href="/">
+                      <a>
+                        <span className="sr-only">Workflow</span>
+                        <img
+                          className="h-8 w-auto"
+                          src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
+                          alt=""
+                        />
+                      </a>
+                    </Link>
+                  </div>
 
-                <div className="hidden h-full lg:flex">
-                  {/* Flyout menus */}
-                  <Popover.Group className="px-4 bottom-0 inset-x-0">
-                    <div className="h-full flex justify-center space-x-8">
-                      {navigation.categories.map((category) => (
-                        <Popover key={category.name} className="flex">
-                          {({ open }) => (
-                            <>
-                              <div className="relative flex">
-                                <Popover.Button
-                                  className={cx(
-                                    open
-                                      ? 'text-indigo-600'
-                                      : 'text-gray-700 hover:text-gray-800',
-                                    'relative flex items-center justify-center transition-colors ease-out duration-200 text-sm font-medium'
-                                  )}
-                                >
-                                  {category.name}
-                                  <span
+                  <div className="hidden h-full lg:flex">
+                    {/* Flyout menus */}
+                    <Popover.Group className="px-4 bottom-0 inset-x-0">
+                      <div className="h-full flex justify-center space-x-8">
+                        {navigation.categories.map((category) => (
+                          <Popover key={category.name} className="flex">
+                            {({ open }) => (
+                              <>
+                                <div className="relative flex">
+                                  <Popover.Button
                                     className={cx(
-                                      open ? 'bg-indigo-600' : '',
-                                      'absolute z-20 -bottom-px inset-x-0 h-0.5 transition ease-out duration-200'
+                                      open
+                                        ? 'text-indigo-600'
+                                        : 'text-gray-700 hover:text-gray-800',
+                                      'relative flex items-center justify-center transition-colors ease-out duration-200 text-sm font-medium'
                                     )}
-                                    aria-hidden="true"
-                                  />
-                                </Popover.Button>
-                              </div>
-
-                              <Transition
-                                as={Fragment}
-                                enter="transition ease-out duration-200"
-                                enterFrom="opacity-0"
-                                enterTo="opacity-100"
-                                leave="transition ease-in duration-150"
-                                leaveFrom="opacity-100"
-                                leaveTo="opacity-0"
-                              >
-                                <Popover.Panel className="absolute z-10 top-full inset-x-0 bg-white text-sm text-gray-500">
-                                  {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
-                                  <div
-                                    className="absolute inset-0 top-1/2 bg-white shadow"
-                                    aria-hidden="true"
-                                  />
-                                  {/* Fake border when menu is open */}
-                                  <div
-                                    className="absolute inset-0 top-0 h-px max-w-7xl mx-auto px-8"
-                                    aria-hidden="true"
                                   >
-                                    <div
+                                    {category.name}
+                                    <span
                                       className={cx(
-                                        open ? 'bg-gray-200' : 'bg-transparent',
-                                        'w-full h-px transition-colors ease-out duration-200'
+                                        open ? 'bg-indigo-600' : '',
+                                        'absolute z-20 -bottom-px inset-x-0 h-0.5 transition ease-out duration-200'
                                       )}
+                                      aria-hidden="true"
                                     />
-                                  </div>
+                                  </Popover.Button>
+                                </div>
 
-                                  <div className="relative">
-                                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                      <div className="grid grid-cols-4 gap-y-10 gap-x-8 py-16">
-                                        {category.featured.map((item) => (
-                                          <div
-                                            key={item.name}
-                                            className="group relative"
-                                          >
-                                            <div className="aspect-w-1 aspect-h-1 rounded-md bg-gray-100 overflow-hidden group-hover:opacity-75">
-                                              <img
-                                                src={item.imageSrc}
-                                                alt={item.imageAlt}
-                                                className="object-center object-cover"
-                                              />
-                                            </div>
-                                            <a
-                                              href={item.href}
-                                              className="mt-4 block font-medium text-gray-900"
+                                <Transition
+                                  as={Fragment}
+                                  enter="transition ease-out duration-200"
+                                  enterFrom="opacity-0"
+                                  enterTo="opacity-100"
+                                  leave="transition ease-in duration-150"
+                                  leaveFrom="opacity-100"
+                                  leaveTo="opacity-0"
+                                >
+                                  <Popover.Panel className="absolute z-10 top-full inset-x-0 bg-white text-sm text-gray-500">
+                                    {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
+                                    <div
+                                      className="absolute inset-0 top-1/2 bg-white shadow"
+                                      aria-hidden="true"
+                                    />
+                                    {/* Fake border when menu is open */}
+                                    <div
+                                      className="absolute inset-0 top-0 h-px max-w-7xl mx-auto px-8"
+                                      aria-hidden="true"
+                                    >
+                                      <div
+                                        className={cx(
+                                          open
+                                            ? 'bg-gray-200'
+                                            : 'bg-transparent',
+                                          'w-full h-px transition-colors ease-out duration-200'
+                                        )}
+                                      />
+                                    </div>
+
+                                    <div className="relative">
+                                      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                        <div className="grid grid-cols-4 gap-y-10 gap-x-8 py-16">
+                                          {category.featured.map((item) => (
+                                            <div
+                                              key={item.name}
+                                              className="group relative"
                                             >
-                                              <span
-                                                className="absolute z-10 inset-0"
+                                              <div className="aspect-w-1 aspect-h-1 rounded-md bg-gray-100 overflow-hidden group-hover:opacity-75">
+                                                <img
+                                                  src={item.imageSrc}
+                                                  alt={item.imageAlt}
+                                                  className="object-center object-cover"
+                                                />
+                                              </div>
+                                              <a
+                                                href={item.href}
+                                                className="mt-4 block font-medium text-gray-900"
+                                              >
+                                                <span
+                                                  className="absolute z-10 inset-0"
+                                                  aria-hidden="true"
+                                                />
+                                                {item.name}
+                                              </a>
+                                              <p
                                                 aria-hidden="true"
-                                              />
-                                              {item.name}
-                                            </a>
-                                            <p
-                                              aria-hidden="true"
-                                              className="mt-1"
-                                            >
-                                              Shop now
-                                            </p>
-                                          </div>
-                                        ))}
+                                                className="mt-1"
+                                              >
+                                                Shop now
+                                              </p>
+                                            </div>
+                                          ))}
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                </Popover.Panel>
-                              </Transition>
-                            </>
-                          )}
-                        </Popover>
-                      ))}
+                                  </Popover.Panel>
+                                </Transition>
+                              </>
+                            )}
+                          </Popover>
+                        ))}
 
-                      {navigation.pages.map((page) => (
-                        <a
-                          key={page.name}
-                          href={page.href}
-                          className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                        >
-                          {page.name}
-                        </a>
-                      ))}
-                    </div>
-                  </Popover.Group>
+                        {navigation.pages.map((page) => (
+                          <a
+                            key={page.name}
+                            href={page.href}
+                            className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                          >
+                            {page.name}
+                          </a>
+                        ))}
+                      </div>
+                    </Popover.Group>
+                  </div>
                 </div>
 
                 {/* Mobile menu and search (lg-) */}
@@ -392,17 +509,8 @@ export default function Layout({ children }: PropsWithChildren) {
                     onClick={() => setMobileMenuOpen(true)}
                   >
                     <span className="sr-only">Open menu</span>
-                    <MenuIcon className="h-6 w-6" aria-hidden="true" />
+                    <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                   </button>
-
-                  {/* Search */}
-                  <a
-                    href="#"
-                    className="ml-2 p-2 text-gray-400 hover:text-gray-500"
-                  >
-                    <span className="sr-only">Search</span>
-                    <SearchIcon className="w-6 h-6" aria-hidden="true" />
-                  </a>
                 </div>
 
                 {/* Logo (lg-) */}
@@ -418,31 +526,53 @@ export default function Layout({ children }: PropsWithChildren) {
                 </Link>
 
                 <div className="flex-1 flex items-center justify-end">
-                  <Link href="/search">
-                    <a className="hidden text-sm font-medium text-gray-700 hover:text-gray-800 lg:block">
-                      Search
-                    </a>
-                  </Link>
+                  <Autocomplete
+                    initialState={{
+                      query: (router.query.query as string) || '',
+                    }}
+                    openOnFocus={true}
+                    placeholder="Search for products"
+                    detachedMediaQuery="(max-width: 1024px)"
+                    classNames={{
+                      form: 'relative rounded-md shadow-sm flex-1',
+                      inputWrapperPrefix:
+                        'absolute inset-y-0 left-0 flex items-center pl-3',
+                      inputWrapperSuffix:
+                        'absolute inset-y-0 right-0 flex items-center pr-2',
+                      label: 'flex items-center',
+                      submitButton: 'h-5 w-5 text-gray-400',
+                      clearButton: 'h-5 w-5 text-gray-400',
+                      input:
+                        'block w-full rounded-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+                      panel:
+                        'flex-1 lg:flex-none lg:absolute lg:mt-2 lg:py-1 z-10 lg:ring-1 lg:ring-black lg:ring-opacity-5 lg:text-sm text-gray-500 bg-white lg:shadow-lg lg:rounded-md overflow-y-scroll lg:max-h-96',
+                      detachedSearchButton:
+                        'p-2 text-gray-400 hover:text-gray-500',
+                      detachedSearchButtonPlaceholder: 'sr-only',
+                      detachedSearchButtonIcon:
+                        'w-6 h-6 flex items-center justify-center',
+                      detachedContainer:
+                        'fixed inset-0 flex flex-col divide-y divide-gray-200/50',
+                      detachedFormContainer: 'flex p-2 bg-white',
+                      detachedCancelButton:
+                        'bg-white px-2 ml-2 text-gray-500 hover:text-gray-600 transition-colors',
+                    }}
+                    className="lg:w-4/6"
+                    navigator={{
+                      navigate({ itemUrl }) {
+                        router.push(itemUrl);
+                      },
+                    }}
+                    onSubmit={({ state }) => {
+                      router.push(`/search/?query=${state.query}`);
+                    }}
+                    plugins={[
+                      recentSearchesPlugin.current,
+                      querySuggestionsPluginRef.current,
+                    ]}
+                  />
 
-                  <div className="flex items-center lg:ml-8">
-                    {/* Help */}
-                    <a
-                      href="#"
-                      className="p-2 text-gray-400 hover:text-gray-500 lg:hidden"
-                    >
-                      <span className="sr-only">Help</span>
-                      <QuestionMarkCircleIcon
-                        className="w-6 h-6"
-                        aria-hidden="true"
-                      />
-                    </a>
-                    <a
-                      href="#"
-                      className="hidden text-sm font-medium text-gray-700 hover:text-gray-800 lg:block"
-                    >
-                      Help
-                    </a>
-
+                  <div className="flex items-center">
                     {/* Cart */}
                     <div className="ml-4 flow-root lg:ml-8">
                       <a href="#" className="group -m-2 p-2 flex items-center">
