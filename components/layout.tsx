@@ -1,19 +1,132 @@
-import { Fragment, PropsWithChildren, useState } from 'react';
+import React, { Fragment, PropsWithChildren, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react';
 import {
-  MenuIcon,
-  QuestionMarkCircleIcon,
-  SearchIcon,
+  ClockIcon,
+  Bars3Icon,
   ShoppingBagIcon,
-  XIcon,
-} from '@heroicons/react/outline';
+  XMarkIcon,
+  MagnifyingGlassIcon,
+  ArrowUpLeftIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
+import { createQuerySuggestionsPlugin } from '@algolia/autocomplete-plugin-query-suggestions';
+import { createLocalStorageRecentSearchesPlugin } from '@algolia/autocomplete-plugin-recent-searches';
+import algoliasearch from 'algoliasearch';
 
 import { cx } from '../utils';
 import { currencies, navigation, footerNavigation, perks } from '../mock';
+import { Autocomplete } from './Autocomplete';
+import { AutocompleteItem } from './AutocompleteItem';
+
+const appId = 'latency';
+const apiKey = '6be0576ff61c053d5f9a3225e2a90f76';
+const searchClient = algoliasearch(appId, apiKey);
 
 export default function Layout({ children }: PropsWithChildren) {
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const recentSearchesPlugin = useRef(
+    createLocalStorageRecentSearchesPlugin({
+      key: 'RECENT_SEARCH',
+      limit: 5,
+      transformSource({ source, onTapAhead, onRemove }) {
+        return {
+          ...source,
+          templates: {
+            item({ item, components }) {
+              return (
+                <AutocompleteItem
+                  router={router}
+                  href={`/search/?query=${item.label}`}
+                >
+                  <AutocompleteItem.Content>
+                    <AutocompleteItem.Icon icon={ClockIcon} />
+                    <span>
+                      <components.ReverseHighlight
+                        hit={item}
+                        attribute="label"
+                      />
+                    </span>
+                  </AutocompleteItem.Content>
+                  <AutocompleteItem.Actions>
+                    <AutocompleteItem.Action
+                      icon={TrashIcon}
+                      title="Remove this search"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        onRemove(item.label);
+                      }}
+                    />
+                    <AutocompleteItem.Action
+                      icon={ArrowUpLeftIcon}
+                      title={`Fill query with "${item.label}"`}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        onTapAhead(item);
+                      }}
+                    />
+                  </AutocompleteItem.Actions>
+                </AutocompleteItem>
+              );
+            },
+          },
+        };
+      },
+    })
+  );
+  const querySuggestionsPluginRef = useRef(
+    createQuerySuggestionsPlugin({
+      searchClient,
+      indexName: 'instant_search_demo_query_suggestions',
+      transformSource({ source, onTapAhead }) {
+        return {
+          ...source,
+          getItemUrl({ item }) {
+            return `/search/?query=${item.query}`;
+          },
+          templates: {
+            ...source.templates,
+            item({ item, components }) {
+              return (
+                <AutocompleteItem
+                  router={router}
+                  href={`/search/?query=${item.query}`}
+                >
+                  <AutocompleteItem.Content>
+                    <AutocompleteItem.Icon icon={MagnifyingGlassIcon} />
+                    <span>
+                      <components.ReverseHighlight
+                        hit={item}
+                        attribute="query"
+                      />
+                    </span>
+                  </AutocompleteItem.Content>
+                  <AutocompleteItem.Actions>
+                    <AutocompleteItem.Action
+                      icon={ArrowUpLeftIcon}
+                      title={`Fill query with "${item.query}"`}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        onTapAhead(item);
+                      }}
+                    />
+                  </AutocompleteItem.Actions>
+                </AutocompleteItem>
+              );
+            },
+          },
+        };
+      },
+    })
+  );
 
   return (
     <div className="bg-white">
@@ -54,7 +167,7 @@ export default function Layout({ children }: PropsWithChildren) {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <span className="sr-only">Close menu</span>
-                    <XIcon className="h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
 
@@ -396,17 +509,8 @@ export default function Layout({ children }: PropsWithChildren) {
                     onClick={() => setMobileMenuOpen(true)}
                   >
                     <span className="sr-only">Open menu</span>
-                    <MenuIcon className="h-6 w-6" aria-hidden="true" />
+                    <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                   </button>
-
-                  {/* Search */}
-                  <a
-                    href="#"
-                    className="ml-2 p-2 text-gray-400 hover:text-gray-500"
-                  >
-                    <span className="sr-only">Search</span>
-                    <SearchIcon className="w-6 h-6" aria-hidden="true" />
-                  </a>
                 </div>
 
                 {/* Logo (lg-) */}
@@ -422,31 +526,53 @@ export default function Layout({ children }: PropsWithChildren) {
                 </Link>
 
                 <div className="flex-1 flex items-center justify-end">
-                  <Link href="/search">
-                    <a className="hidden text-sm font-medium text-gray-700 hover:text-gray-800 lg:block">
-                      Search
-                    </a>
-                  </Link>
+                  <Autocomplete
+                    initialState={{
+                      query: (router.query.query as string) || '',
+                    }}
+                    openOnFocus={true}
+                    placeholder="Search for products"
+                    detachedMediaQuery="(max-width: 1024px)"
+                    classNames={{
+                      form: 'relative rounded-md shadow-sm flex-1',
+                      inputWrapperPrefix:
+                        'absolute inset-y-0 left-0 flex items-center pl-3',
+                      inputWrapperSuffix:
+                        'absolute inset-y-0 right-0 flex items-center pr-2',
+                      label: 'flex items-center',
+                      submitButton: 'h-5 w-5 text-gray-400',
+                      clearButton: 'h-5 w-5 text-gray-400',
+                      input:
+                        'block w-full rounded-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+                      panel:
+                        'flex-1 lg:flex-none lg:absolute lg:mt-2 lg:py-1 z-10 lg:ring-1 lg:ring-black lg:ring-opacity-5 lg:text-sm text-gray-500 bg-white lg:shadow-lg lg:rounded-md overflow-y-scroll lg:max-h-96',
+                      detachedSearchButton:
+                        'p-2 text-gray-400 hover:text-gray-500',
+                      detachedSearchButtonPlaceholder: 'sr-only',
+                      detachedSearchButtonIcon:
+                        'w-6 h-6 flex items-center justify-center',
+                      detachedContainer:
+                        'fixed inset-0 flex flex-col divide-y divide-gray-200/50',
+                      detachedFormContainer: 'flex p-2 bg-white',
+                      detachedCancelButton:
+                        'bg-white px-2 ml-2 text-gray-500 hover:text-gray-600 transition-colors',
+                    }}
+                    className="lg:w-4/6"
+                    navigator={{
+                      navigate({ itemUrl }) {
+                        router.push(itemUrl);
+                      },
+                    }}
+                    onSubmit={({ state }) => {
+                      router.push(`/search/?query=${state.query}`);
+                    }}
+                    plugins={[
+                      recentSearchesPlugin.current,
+                      querySuggestionsPluginRef.current,
+                    ]}
+                  />
 
-                  <div className="flex items-center lg:ml-8">
-                    {/* Help */}
-                    <a
-                      href="#"
-                      className="p-2 text-gray-400 hover:text-gray-500 lg:hidden"
-                    >
-                      <span className="sr-only">Help</span>
-                      <QuestionMarkCircleIcon
-                        className="w-6 h-6"
-                        aria-hidden="true"
-                      />
-                    </a>
-                    <a
-                      href="#"
-                      className="hidden text-sm font-medium text-gray-700 hover:text-gray-800 lg:block"
-                    >
-                      Help
-                    </a>
-
+                  <div className="flex items-center">
                     {/* Cart */}
                     <div className="ml-4 flow-root lg:ml-8">
                       <a href="#" className="group -m-2 p-2 flex items-center">
