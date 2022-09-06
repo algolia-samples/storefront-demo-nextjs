@@ -48,14 +48,19 @@ function Filters({ type }: Pick<FilterProps, 'type'>) {
               value: 'PROD_pwa_ecom_ui_template_products_price_desc',
             },
           ]}
+          classNames={{
+            select:
+              'mt-6 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100',
+          }}
         />
       </Filter>
       <Filter header="Brand" type={type} className="pt-10">
-        <RefinementList attribute="brand" />
+        <RefinementList attribute="brand" limit={8} />
       </Filter>
       <Filter header="Color" type={type} className="pt-10">
         <RefinementList
           attribute="color.original_name"
+          limit={8}
           transformItems={(items) =>
             items.map((item) => ({
               ...item,
@@ -67,10 +72,20 @@ function Filters({ type }: Pick<FilterProps, 'type'>) {
         />
       </Filter>
       <Filter header="Size" type={type} className="pt-10">
-        <RefinementList attribute="available_sizes" />
+        <RefinementList attribute="available_sizes" limit={8} />
       </Filter>
       <Filter header="Price range" type={type} className="pt-10">
-        <RangeInput attribute="price.value" />
+        <RangeInput
+          attribute="price.value"
+          classNames={{
+            form: 'pt-6 flex space-x-4 justify-between',
+            input:
+              'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+            separator: 'self-center text-sm font-medium text-gray-500',
+            submit:
+              'rounded-md bg-gray-200 px-4 text-sm font-medium text-gray-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50',
+          }}
+        />
       </Filter>
     </>
   );
@@ -222,6 +237,15 @@ export default function Search() {
                   label: FILTER_LABEL_MAP[item.label] || item.label,
                 }))
               }
+              classNames={{
+                root: 'relative before:content-[""] before:absolute before:w-4 before:h-full before:bg-gradient-to-r before:from-gray-100 after:content-[""] after:absolute after:w-4 after:h-full after:top-0 after:right-0 after:bg-gradient-to-l after:from-gray-100',
+                list: 'flex space-x-4 px-4 pb-4 sm:py-4 overflow-auto',
+                noRefinementList: 'p-0 sm:mt-0.5 sm:h-16',
+                item: 'flex flex-shrink-0 rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900',
+                categoryLabel: 'ml-2 font-normal text-gray-700',
+                delete:
+                  'ml-1 inline-flex items-center w-4 h-4 flex-shrink-0 rounded-full p-1 hover:!bg-gray-200 text-xs text-gray-400 hover:text-gray-500',
+              }}
             />
           </div>
         </div>
@@ -258,7 +282,20 @@ export default function Search() {
                 Products
               </h2>
 
-              <InfiniteHits hitComponent={HitComponent} showPrevious={true} />
+              <InfiniteHits
+                hitComponent={HitComponent}
+                showPrevious={true}
+                classNames={{
+                  list: 'grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3',
+                  item: 'relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden',
+                  loadPrevious:
+                    'mb-10 h-10 w-full items-center rounded-md border border-gray-300 bg-white px-4 hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600',
+                  disabledLoadPrevious: 'hidden',
+                  loadMore:
+                    'mt-10 h-10 w-full items-center rounded-md border border-gray-300 bg-white px-4 hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600',
+                  disabledLoadMore: 'hidden',
+                }}
+              />
             </section>
           </div>
         </div>
