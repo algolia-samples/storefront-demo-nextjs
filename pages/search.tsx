@@ -47,26 +47,7 @@ const refinementListClassNames: Parameters<
 function Filters({ type }: Pick<FilterProps, 'type'>) {
   return (
     <>
-      <Filter header="Sort by" type={type}>
-        <SortBy
-          items={[
-            { label: 'Relevance', value: 'PROD_pwa_ecom_ui_template_products' },
-            {
-              label: 'Price: Low to high',
-              value: 'PROD_pwa_ecom_ui_template_products_price_asc',
-            },
-            {
-              label: 'Price: High to low',
-              value: 'PROD_pwa_ecom_ui_template_products_price_desc',
-            },
-          ]}
-          classNames={{
-            select:
-              'mt-6 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100',
-          }}
-        />
-      </Filter>
-      <Filter header="Brand" type={type} className="pt-10">
+      <Filter header="Brand" type={type}>
         <RefinementList
           attribute="brand"
           limit={8}
@@ -243,31 +224,55 @@ export default function Search() {
 
         {/* Active filters */}
         <div className="bg-gray-100 border-t border-gray-200">
-          <div className="mx-auto max-w-7xl sm:flex sm:items-center sm:px-6 lg:px-8">
-            <h3 className="text-sm px-4 py-3 sm:p-0 flex-shrink-0 font-medium text-gray-500">
-              Active filters
-            </h3>
-            <div
-              aria-hidden="true"
-              className="hidden h-5 w-px bg-gray-300 sm:ml-4 sm:block"
-            ></div>
-            <CurrentRefinements
-              transformItems={(items) =>
-                items.map((item) => ({
-                  ...item,
-                  label: FILTER_LABEL_MAP[item.label] || item.label,
-                }))
-              }
-              classNames={{
-                root: 'relative before:content-[""] before:absolute before:w-4 before:h-full before:bg-gradient-to-r before:from-gray-100 after:content-[""] after:absolute after:w-4 after:h-full after:top-0 after:right-0 after:bg-gradient-to-l after:from-gray-100',
-                list: 'flex space-x-4 px-4 pb-4 sm:py-4 overflow-auto',
-                noRefinementList: 'p-0 sm:mt-0.5 sm:h-16',
-                item: 'flex flex-shrink-0 rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900',
-                categoryLabel: 'ml-2 font-normal text-gray-700',
-                delete:
-                  'ml-1 inline-flex items-center w-4 h-4 flex-shrink-0 rounded-full p-1 hover:!bg-gray-200 text-xs text-gray-400 hover:text-gray-500',
-              }}
-            />
+          <div className="sm:flex sm:items-center mx-auto sm:px-6 lg:px-8 max-w-7xl">
+            <div className="sm:order-2 p-3 sm:p-0 sm:flex-shrink-0">
+              <SortBy
+                items={[
+                  {
+                    label: 'Sort by relevance',
+                    value: 'PROD_pwa_ecom_ui_template_products',
+                  },
+                  {
+                    label: 'Sort by price (low to high)',
+                    value: 'PROD_pwa_ecom_ui_template_products_price_asc',
+                  },
+                  {
+                    label: 'Sort by price (high to low)',
+                    value: 'PROD_pwa_ecom_ui_template_products_price_desc',
+                  },
+                ]}
+                classNames={{
+                  select:
+                    'w-full m-0 pl-4 pr-8 py-2 rounded-md border-0 bg-transparent cursor-pointer text-sm font-medium text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500',
+                }}
+              />
+            </div>
+            <div className="border-t border-gray-200 flex-grow sm:flex sm:items-center">
+              <h3 className="text-sm px-7 py-5 sm:p-0 flex-shrink-0 font-medium text-gray-500">
+                Active filters
+              </h3>
+              <div
+                aria-hidden="true"
+                className="hidden h-5 w-px bg-gray-300 sm:ml-4 sm:block"
+              ></div>
+              <CurrentRefinements
+                transformItems={(items) =>
+                  items.map((item) => ({
+                    ...item,
+                    label: FILTER_LABEL_MAP[item.label] || item.label,
+                  }))
+                }
+                classNames={{
+                  root: 'relative before:content-[""] before:absolute before:w-4 before:h-full before:bg-gradient-to-r before:from-gray-100 after:content-[""] after:absolute after:w-4 after:h-full after:top-0 after:right-0 after:bg-gradient-to-l after:from-gray-100',
+                  list: 'flex space-x-4 px-4 pb-4 sm:py-4 overflow-auto',
+                  noRefinementList: '!p-0 sm:mt-0.5 sm:h-16',
+                  item: 'flex flex-shrink-0 rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900',
+                  categoryLabel: 'ml-2 font-normal text-gray-700',
+                  delete:
+                    'ml-1 inline-flex items-center w-4 h-4 flex-shrink-0 rounded-full p-1 hover:!bg-gray-200 text-xs text-gray-400 hover:text-gray-500',
+                }}
+              />
+            </div>
           </div>
         </div>
 
