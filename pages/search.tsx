@@ -32,6 +32,18 @@ const FILTER_LABEL_MAP: Record<string, string> = {
   'price.value': 'Price',
 };
 
+const refinementListClassNames: Parameters<
+  typeof RefinementList
+>[0]['classNames'] = {
+  list: 'pt-6 space-y-3',
+  item: 'flex items-center',
+  checkbox:
+    'h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500',
+  labelText: 'ml-3 text-sm text-gray-600',
+  count:
+    'ml-1.5 rounded bg-gray-200 py-0.5 px-1.5 text-xs font-semibold tabular-nums text-gray-700',
+};
+
 function Filters({ type }: Pick<FilterProps, 'type'>) {
   return (
     <>
@@ -55,7 +67,11 @@ function Filters({ type }: Pick<FilterProps, 'type'>) {
         />
       </Filter>
       <Filter header="Brand" type={type} className="pt-10">
-        <RefinementList attribute="brand" limit={8} />
+        <RefinementList
+          attribute="brand"
+          limit={8}
+          classNames={refinementListClassNames}
+        />
       </Filter>
       <Filter header="Color" type={type} className="pt-10">
         <RefinementList
@@ -69,10 +85,15 @@ function Filters({ type }: Pick<FilterProps, 'type'>) {
                 item.label.slice(1),
             }))
           }
+          classNames={refinementListClassNames}
         />
       </Filter>
       <Filter header="Size" type={type} className="pt-10">
-        <RefinementList attribute="available_sizes" limit={8} />
+        <RefinementList
+          attribute="available_sizes"
+          limit={8}
+          classNames={refinementListClassNames}
+        />
       </Filter>
       <Filter header="Price range" type={type} className="pt-10">
         <RangeInput
