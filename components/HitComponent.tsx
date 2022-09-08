@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Highlight } from 'react-instantsearch-hooks-web';
 
 import type { Hit } from 'instantsearch.js';
@@ -26,12 +27,12 @@ type HitComponentProps = {
 export function HitComponent({ hit }: HitComponentProps) {
   return (
     <div className="group" key={hit.objectID}>
-      <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+      <div className="sm:relative aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
+        <Image
           src={hit.image_urls[0]}
           alt={hit.name}
           className="w-full h-full object-center object-cover sm:w-full sm:h-full"
+          layout="fill"
         />
       </div>
       <div className="flex-1 p-4 space-y-2 flex flex-col">

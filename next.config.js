@@ -8,6 +8,7 @@ const nextConfig = {
       'd28i4xct2kl5lp.cloudfront.net',
       'tailwindui.com',
       'cdn-demo.algolia.com',
+      'res.cloudinary.com',
     ],
   },
 };
