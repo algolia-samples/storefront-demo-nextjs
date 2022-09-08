@@ -12,6 +12,7 @@ import {
   RangeInput,
   RefinementList,
   SortBy,
+  useCurrentRefinements,
 } from 'react-instantsearch-hooks-web';
 import algoliasearch from 'algoliasearch/lite';
 
@@ -43,6 +44,11 @@ const refinementListClassNames: Parameters<
   count:
     'ml-1.5 rounded bg-gray-200 py-0.5 px-1.5 text-xs font-semibold tabular-nums text-gray-700',
 };
+
+function EmptyFiltersWrapper({ children }: React.PropsWithChildren) {
+  const { canRefine } = useCurrentRefinements();
+  return <>{canRefine ? children : null}</>;
+}
 
 function Filters({ type }: Pick<FilterProps, 'type'>) {
   return (
@@ -225,13 +231,15 @@ export default function Search() {
               />
             </div>
             <div className="border-t border-gray-200 flex-grow sm:flex sm:items-center">
-              <h3 className="text-sm px-7 py-5 sm:p-0 flex-shrink-0 font-medium text-gray-500">
-                Active filters
-              </h3>
-              <div
-                aria-hidden="true"
-                className="hidden h-5 w-px bg-gray-300 sm:ml-4 sm:block"
-              ></div>
+              <EmptyFiltersWrapper>
+                <h3 className="text-sm px-7 py-5 sm:p-0 flex-shrink-0 font-medium text-gray-500">
+                  Active filters
+                </h3>
+                <div
+                  aria-hidden="true"
+                  className="hidden h-5 w-px bg-gray-300 sm:ml-4 sm:block"
+                ></div>
+              </EmptyFiltersWrapper>
               <CurrentRefinements
                 transformItems={(items) =>
                   items.map((item) => ({
