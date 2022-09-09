@@ -371,7 +371,7 @@ export default function Layout({ children }: PropsWithChildren) {
                   <div className="hidden lg:flex-1 lg:flex lg:items-center mr-4">
                     <Link href="/">
                       <a>
-                        <span className="sr-only">Workflow</span>
+                        <span className="sr-only">Algolia Storefront</span>
                         <img
                           className="h-8 w-auto"
                           src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
@@ -511,7 +511,7 @@ export default function Layout({ children }: PropsWithChildren) {
                 {/* Logo (lg-) */}
                 <Link href="/">
                   <a className="lg:hidden">
-                    <span className="sr-only">Workflow</span>
+                    <span className="sr-only">Algolia Storefront</span>
                     <img
                       src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
                       alt=""
@@ -736,7 +736,7 @@ export default function Layout({ children }: PropsWithChildren) {
 
           <div className="border-t border-gray-100 py-10 text-center">
             <p className="text-sm text-gray-500">
-              &copy; 2021 Workflow, Inc. All rights reserved.
+              &copy; 2022 Algolia Storefront, Inc. All rights reserved.
             </p>
           </div>
         </div>
