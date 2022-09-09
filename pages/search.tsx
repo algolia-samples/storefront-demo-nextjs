@@ -158,38 +158,31 @@ export default function Search() {
               role="list"
               className="flex items-center space-x-4 py-4 border-t border-gray-200"
             >
-              {breadcrumbs.map((breadcrumb) => (
+              {breadcrumbs.map((breadcrumb, index) => (
                 <li key={breadcrumb.id}>
                   <div className="flex items-center">
+                    {index > 0 && (
+                      <svg
+                        viewBox="0 0 6 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                        className="mr-4 h-5 w-auto text-gray-300"
+                      >
+                        <path
+                          d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    )}
                     <a
                       href={breadcrumb.href}
-                      className="mr-4 text-sm font-medium text-gray-900"
+                      className="text-sm font-medium text-gray-900"
                     >
                       {breadcrumb.name}
                     </a>
-                    <svg
-                      viewBox="0 0 6 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
-                      className="h-5 w-auto text-gray-300"
-                    >
-                      <path
-                        d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z"
-                        fill="currentColor"
-                      />
-                    </svg>
                   </div>
                 </li>
               ))}
-              <li className="text-sm">
-                <a
-                  href="#"
-                  aria-current="page"
-                  className="font-medium text-gray-500 hover:text-gray-600"
-                >
-                  Back-to-School Sale
-                </a>
-              </li>
             </ol>
           </nav>
         </div>
