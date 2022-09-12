@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import { Dialog } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
-import { PlusSmIcon } from '@heroicons/react/solid';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { PlusIcon } from '@heroicons/react/24/solid';
 
 import {
   Configure,
@@ -143,7 +143,7 @@ export default function Search() {
                   onClick={() => setMobileFiltersOpen(false)}
                 >
                   <span className="sr-only">Close menu</span>
-                  <XIcon className="h-6 w-6" aria-hidden="true" />
+                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
 
