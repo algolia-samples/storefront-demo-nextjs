@@ -18,11 +18,12 @@ import { cx, searchClient } from '../utils';
 import { navigation, footerNavigation, perks } from '../mock';
 import { Autocomplete } from './Autocomplete';
 import { AutocompleteItem } from './AutocompleteItem';
+import { useLazyRef } from '../hooks';
 
 export default function Layout({ children }: PropsWithChildren) {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const recentSearchesPlugin = useRef(
+  const getRecentSearchesPlugin = useLazyRef(() =>
     createLocalStorageRecentSearchesPlugin({
       key: 'RECENT_SEARCH',
       limit: 5,
@@ -75,7 +76,7 @@ export default function Layout({ children }: PropsWithChildren) {
       },
     })
   );
-  const querySuggestionsPluginRef = useRef(
+  const getQuerySuggestionsPlugin = useLazyRef(() =>
     createQuerySuggestionsPlugin({
       searchClient,
       indexName: 'instant_search_demo_query_suggestions',
@@ -438,8 +439,8 @@ export default function Layout({ children }: PropsWithChildren) {
                       router.push(`/search/?query=${state.query}`);
                     }}
                     plugins={[
-                      recentSearchesPlugin.current,
-                      querySuggestionsPluginRef.current,
+                      getRecentSearchesPlugin(),
+                      getQuerySuggestionsPlugin(),
                     ]}
                   />
 
