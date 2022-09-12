@@ -45,9 +45,16 @@ const refinementListClassNames: Parameters<
     'ml-1.5 rounded bg-gray-200 py-0.5 px-1.5 text-xs font-semibold tabular-nums text-gray-700',
 };
 
-function EmptyFiltersWrapper({ children }: React.PropsWithChildren) {
+function NoFiltersLabel() {
   const { canRefine } = useCurrentRefinements();
-  return <>{canRefine ? children : null}</>;
+  return (
+    (!canRefine && (
+      <p className="text-sm mx-7 mb-4 sm:mb-0 font-normal text-gray-400">
+        No active filters
+      </p>
+    )) ||
+    null
+  );
 }
 
 function Filters({ type }: Pick<FilterProps, 'type'>) {
@@ -223,16 +230,15 @@ export default function Search() {
                 }}
               />
             </div>
-            <div className="border-t border-gray-200 flex-grow sm:flex sm:items-center">
-              <EmptyFiltersWrapper>
-                <h3 className="text-sm px-7 py-5 sm:p-0 flex-shrink-0 font-medium text-gray-500">
-                  Active filters
-                </h3>
-                <div
-                  aria-hidden="true"
-                  className="hidden h-5 w-px bg-gray-300 sm:ml-4 sm:block"
-                ></div>
-              </EmptyFiltersWrapper>
+            <div className="border-t border-gray-200 sm:border-0 flex-grow sm:flex sm:items-center">
+              <h3 className="text-sm px-7 py-5 sm:p-0 flex-shrink-0 font-medium text-gray-500">
+                Active filters
+              </h3>
+              <div
+                aria-hidden="true"
+                className="hidden h-5 w-px bg-gray-300 sm:ml-4 sm:block"
+              ></div>
+              <NoFiltersLabel />
               <CurrentRefinements
                 transformItems={(items) =>
                   items.map((item) => ({
@@ -241,8 +247,8 @@ export default function Search() {
                   }))
                 }
                 classNames={{
-                  root: 'relative before:content-[""] before:absolute before:w-4 before:h-full before:bg-gradient-to-r before:from-gray-100 after:content-[""] after:absolute after:w-4 after:h-full after:top-0 after:right-0 after:bg-gradient-to-l after:from-gray-100',
-                  list: 'flex space-x-4 px-4 pb-4 sm:py-4 overflow-auto',
+                  root: 'relative before:content-[""] before:absolute before:w-6 before:h-full before:bg-gradient-to-r before:from-gray-100 after:content-[""] after:absolute after:w-6 after:h-full after:top-0 after:right-0 after:bg-gradient-to-l after:from-gray-100',
+                  list: 'flex space-x-4 px-6 pb-4 sm:py-4 overflow-auto',
                   noRefinementList: '!p-0 sm:mt-0.5 sm:h-16',
                   item: 'flex flex-shrink-0 rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900',
                   categoryLabel: 'ml-2 font-normal text-gray-700',
