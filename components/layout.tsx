@@ -16,8 +16,7 @@ import { createLocalStorageRecentSearchesPlugin } from '@algolia/autocomplete-pl
 
 import { cx, searchClient } from '../utils';
 import { navigation, footerNavigation, perks } from '../mock';
-import { Autocomplete } from './Autocomplete';
-import { AutocompleteItem } from './AutocompleteItem';
+import { Autocomplete, AutocompleteItem } from '../components';
 import { useLazyRef } from '../hooks';
 
 export default function Layout({ children }: PropsWithChildren) {
