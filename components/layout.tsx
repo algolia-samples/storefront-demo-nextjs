@@ -15,7 +15,7 @@ import { createQuerySuggestionsPlugin } from '@algolia/autocomplete-plugin-query
 import { createLocalStorageRecentSearchesPlugin } from '@algolia/autocomplete-plugin-recent-searches';
 
 import { cx, searchClient } from '../utils';
-import { currencies, navigation, footerNavigation, perks } from '../mock';
+import { navigation, footerNavigation, perks } from '../mock';
 import { Autocomplete } from './Autocomplete';
 import { AutocompleteItem } from './AutocompleteItem';
 
@@ -125,7 +125,6 @@ export default function Layout({ children }: PropsWithChildren) {
 
   return (
     <div className="bg-white">
-      {/* Mobile menu */}
       <Transition.Root show={mobileMenuOpen} as={Fragment}>
         <Dialog
           as="div"
@@ -166,7 +165,6 @@ export default function Layout({ children }: PropsWithChildren) {
                   </button>
                 </div>
 
-                {/* Links */}
                 <Tab.Group as="div" className="mt-2">
                   <div className="border-b border-gray-200">
                     <Tab.List className="-mb-px flex px-4 space-x-8">
@@ -239,64 +237,6 @@ export default function Layout({ children }: PropsWithChildren) {
                     </div>
                   ))}
                 </div>
-
-                <div className="border-t border-gray-200 py-6 px-4 space-y-6">
-                  <div className="flow-root">
-                    <a
-                      href="#"
-                      className="-m-2 p-2 block font-medium text-gray-900"
-                    >
-                      Create an account
-                    </a>
-                  </div>
-                  <div className="flow-root">
-                    <a
-                      href="#"
-                      className="-m-2 p-2 block font-medium text-gray-900"
-                    >
-                      Sign in
-                    </a>
-                  </div>
-                </div>
-
-                <div className="border-t border-gray-200 py-6 px-4 space-y-6">
-                  {/* Currency selector */}
-                  <form>
-                    <div className="inline-block">
-                      <label htmlFor="mobile-currency" className="sr-only">
-                        Currency
-                      </label>
-                      <div className="-ml-2 group relative border-transparent rounded-md focus-within:ring-2 focus-within:ring-white">
-                        <select
-                          id="mobile-currency"
-                          name="currency"
-                          className="bg-none border-transparent rounded-md py-0.5 pl-2 pr-5 flex items-center text-sm font-medium text-gray-700 group-hover:text-gray-800 focus:outline-none focus:ring-0 focus:border-transparent"
-                        >
-                          {currencies.map((currency) => (
-                            <option key={currency}>{currency}</option>
-                          ))}
-                        </select>
-                        <div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
-                          <svg
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 20 20"
-                            className="w-5 h-5 text-gray-500"
-                          >
-                            <path
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="1.5"
-                              d="M6 8l4 4 4-4"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
               </Dialog.Panel>
             </Transition.Child>
           </div>
@@ -305,68 +245,9 @@ export default function Layout({ children }: PropsWithChildren) {
 
       <header className="relative">
         <nav aria-label="Top">
-          {/* Top navigation */}
-          <div className="bg-gray-900">
-            <div className="max-w-7xl mx-auto h-10 px-4 flex items-center justify-between sm:px-6 lg:px-8">
-              {/* Currency selector */}
-              <form>
-                <div>
-                  <label htmlFor="desktop-currency" className="sr-only">
-                    Currency
-                  </label>
-                  <div className="-ml-2 group relative bg-gray-900 border-transparent rounded-md focus-within:ring-2 focus-within:ring-white">
-                    <select
-                      id="desktop-currency"
-                      name="currency"
-                      className="bg-none bg-gray-900 border-transparent rounded-md py-0.5 pl-2 pr-5 flex items-center text-sm font-medium text-white group-hover:text-gray-100 focus:outline-none focus:ring-0 focus:border-transparent"
-                    >
-                      {currencies.map((currency) => (
-                        <option key={currency}>{currency}</option>
-                      ))}
-                    </select>
-                    <div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
-                      <svg
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 20 20"
-                        className="w-5 h-5 text-gray-300"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="1.5"
-                          d="M6 8l4 4 4-4"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </form>
-
-              <div className="flex items-center space-x-6">
-                <a
-                  href="#"
-                  className="text-sm font-medium text-white hover:text-gray-100"
-                >
-                  Sign in
-                </a>
-                <a
-                  href="#"
-                  className="text-sm font-medium text-white hover:text-gray-100"
-                >
-                  Create an account
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Secondary navigation */}
           <div className="bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="h-16 flex items-center justify-between">
-                {/* Logo (lg+) */}
                 <div className="hidden h-full lg:flex lg:items-center">
                   <div className="hidden lg:flex-1 lg:flex lg:items-center mr-4">
                     <Link href="/">
@@ -382,7 +263,6 @@ export default function Layout({ children }: PropsWithChildren) {
                   </div>
 
                   <div className="hidden h-full lg:flex">
-                    {/* Flyout menus */}
                     <Popover.Group className="px-4 bottom-0 inset-x-0">
                       <div className="h-full flex justify-center space-x-8">
                         {navigation.categories.map((category) => (
@@ -419,12 +299,10 @@ export default function Layout({ children }: PropsWithChildren) {
                                   leaveTo="opacity-0"
                                 >
                                   <Popover.Panel className="absolute z-10 top-full inset-x-0 bg-white text-sm text-gray-500">
-                                    {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
                                     <div
                                       className="absolute inset-0 top-1/2 bg-white shadow"
                                       aria-hidden="true"
                                     />
-                                    {/* Fake border when menu is open */}
                                     <div
                                       className="absolute inset-0 top-0 h-px max-w-7xl mx-auto px-8"
                                       aria-hidden="true"
@@ -496,7 +374,6 @@ export default function Layout({ children }: PropsWithChildren) {
                   </div>
                 </div>
 
-                {/* Mobile menu and search (lg-) */}
                 <div className="flex-1 flex items-center lg:hidden">
                   <button
                     type="button"
@@ -508,7 +385,6 @@ export default function Layout({ children }: PropsWithChildren) {
                   </button>
                 </div>
 
-                {/* Logo (lg-) */}
                 <Link href="/">
                   <a className="lg:hidden">
                     <span className="sr-only">Algolia Storefront</span>
@@ -568,7 +444,6 @@ export default function Layout({ children }: PropsWithChildren) {
                   />
 
                   <div className="flex items-center">
-                    {/* Cart */}
                     <div className="ml-4 flow-root lg:ml-8">
                       <a href="#" className="group -m-2 p-2 flex items-center">
                         <ShoppingBagIcon
@@ -636,7 +511,6 @@ export default function Layout({ children }: PropsWithChildren) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-t border-gray-200 py-20">
             <div className="grid grid-cols-1 md:grid-cols-12 md:grid-flow-col md:gap-x-8 md:gap-y-16 md:auto-rows-min">
-              {/* Image section */}
               <div className="col-span-1 md:col-span-2 lg:row-start-1 lg:col-start-1">
                 <img
                   src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
@@ -645,7 +519,6 @@ export default function Layout({ children }: PropsWithChildren) {
                 />
               </div>
 
-              {/* Sitemap sections */}
               <div className="mt-10 col-span-6 grid grid-cols-2 gap-8 sm:grid-cols-3 md:mt-0 md:row-start-1 md:col-start-3 md:col-span-8 lg:col-start-2 lg:col-span-6">
                 <div className="grid grid-cols-1 gap-y-12 sm:col-span-2 sm:grid-cols-2 sm:gap-x-8">
                   <div>
@@ -702,7 +575,6 @@ export default function Layout({ children }: PropsWithChildren) {
                 </div>
               </div>
 
-              {/* Newsletter section */}
               <div className="mt-12 md:mt-0 md:row-start-2 md:col-start-3 md:col-span-8 lg:row-start-1 lg:col-start-9 lg:col-span-4">
                 <h3 className="text-sm font-medium text-gray-900">
                   Sign up for our newsletter
