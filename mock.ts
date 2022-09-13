@@ -1,7 +1,5 @@
 /* Layout */
 
-export const currencies = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'];
-
 export const navigation = {
   categories: [
     {
@@ -166,50 +164,6 @@ export const categories = [
       'https://d28i4xct2kl5lp.cloudfront.net/product_images/30420_14eb0905-e5f7-4be3-b9ea-e5016a139790.jpg',
     className: 'translate-y-8',
   },
-];
-
-export const trendingProducts = [
-  {
-    id: 1,
-    name: 'Leather Long Wallet',
-    color: 'Natural',
-    price: '$75',
-    href: '#',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
-    imageAlt: 'Hand stitched, orange leather long wallet.',
-  },
-  {
-    id: 2,
-    name: 'Leather Long Wallet',
-    color: 'Natural',
-    price: '$75',
-    href: '#',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
-    imageAlt: 'Hand stitched, orange leather long wallet.',
-  },
-  {
-    id: 3,
-    name: 'Leather Long Wallet',
-    color: 'Natural',
-    price: '$75',
-    href: '#',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
-    imageAlt: 'Hand stitched, orange leather long wallet.',
-  },
-  {
-    id: 4,
-    name: 'Leather Long Wallet',
-    color: 'Natural',
-    price: '$75',
-    href: '#',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
-    imageAlt: 'Hand stitched, orange leather long wallet.',
-  },
-  // More products...
 ];
 
 /** Search */
