@@ -48,7 +48,7 @@ function DisclosureWrapper({ header, children }: WrapperProps) {
               </span>
             </Disclosure.Button>
           </legend>
-          <Disclosure.Panel unmount={false} className="pt-4 pb-2 px-4">
+          <Disclosure.Panel unmount={false} className="px-4">
             {children}
           </Disclosure.Panel>
         </fieldset>

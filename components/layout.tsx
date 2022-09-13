@@ -1,7 +1,7 @@
 import React, { Fragment, PropsWithChildren, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Dialog, Popover, Tab, Transition } from '@headlessui/react';
+import { Dialog, Popover, Transition } from '@headlessui/react';
 import {
   ClockIcon,
   Bars3Icon,
@@ -14,8 +14,8 @@ import {
 import { createQuerySuggestionsPlugin } from '@algolia/autocomplete-plugin-query-suggestions';
 import { createLocalStorageRecentSearchesPlugin } from '@algolia/autocomplete-plugin-recent-searches';
 
-import { cx, PRODUCTS_QUERY_SUGGESTIONS_INDEX, searchClient } from '../utils';
-import { navigation, footerNavigation, perks } from '../mock';
+import { PRODUCTS_QUERY_SUGGESTIONS_INDEX, searchClient } from '../utils';
+import { navigation, footerNavigation, perks } from '../data';
 import { Autocomplete, AutocompleteItem } from '../components';
 import { useLazyRef } from '../hooks';
 import Image from 'next/image';
@@ -377,10 +377,10 @@ export default function Layout({ children }: PropsWithChildren) {
                 <div className="grid grid-cols-1 gap-y-12 sm:col-span-2 sm:grid-cols-2 sm:gap-x-8">
                   <div>
                     <h3 className="text-sm font-medium text-gray-900">
-                      Products
+                      About us
                     </h3>
                     <ul role="list" className="mt-6 space-y-6">
-                      {footerNavigation.products.map((item) => (
+                      {footerNavigation.about.map((item) => (
                         <li key={item.name} className="text-sm">
                           <a
                             href={item.href}
@@ -393,11 +393,9 @@ export default function Layout({ children }: PropsWithChildren) {
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-sm font-medium text-gray-900">
-                      Company
-                    </h3>
+                    <h3 className="text-sm font-medium text-gray-900">Help</h3>
                     <ul role="list" className="mt-6 space-y-6">
-                      {footerNavigation.company.map((item) => (
+                      {footerNavigation.help.map((item) => (
                         <li key={item.name} className="text-sm">
                           <a
                             href={item.href}
@@ -412,10 +410,10 @@ export default function Layout({ children }: PropsWithChildren) {
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-gray-900">
-                    Customer Service
+                    Law and order
                   </h3>
                   <ul role="list" className="mt-6 space-y-6">
-                    {footerNavigation.customerService.map((item) => (
+                    {footerNavigation.legal.map((item) => (
                       <li key={item.name} className="text-sm">
                         <a
                           href={item.href}
