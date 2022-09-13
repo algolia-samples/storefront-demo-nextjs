@@ -3,37 +3,35 @@
 export const navigation = {
   categories: [],
   pages: [
-    { name: 'Women', href: '#' },
-    { name: 'Men', href: '#' },
-    { name: 'Company', href: '#' },
-    { name: 'Stores', href: '#' },
+    { name: 'About us', href: '#' },
+    { name: 'Sell', href: '#' },
+    { name: 'Help', href: '#' },
   ],
 };
 
 export const footerNavigation = {
-  products: [
-    { name: 'Bags', href: '#' },
-    { name: 'Tees', href: '#' },
-    { name: 'Objects', href: '#' },
-    { name: 'Home Goods', href: '#' },
-    { name: 'Accessories', href: '#' },
-  ],
-  company: [
-    { name: 'Who we are', href: '#' },
-    { name: 'Sustainability', href: '#' },
-    { name: 'Press', href: '#' },
+  about: [
+    { name: 'Who are we?', href: '#' },
+    { name: 'Phone comparison', href: '#' },
+    { name: 'Student discount', href: '#' },
     { name: 'Careers', href: '#' },
-    { name: 'Terms & Conditions', href: '#' },
-    { name: 'Privacy', href: '#' },
+    { name: 'Blog', href: '#' },
+    { name: 'Guides & reviews', href: '#' },
+    { name: 'Press', href: '#' },
   ],
-  customerService: [
-    { name: 'Contact', href: '#' },
-    { name: 'Shipping', href: '#' },
-    { name: 'Returns', href: '#' },
-    { name: 'Warranty', href: '#' },
-    { name: 'Secure Payments', href: '#' },
-    { name: 'FAQ', href: '#' },
-    { name: 'Find a store', href: '#' },
+  help: [
+    { name: 'Register to sell', href: '#' },
+    { name: 'Seller portal', href: '#' },
+    { name: 'Payments', href: '#' },
+    { name: 'Delivery', href: '#' },
+    { name: 'Contact us', href: '#' },
+  ],
+  legal: [
+    { name: 'Terms of service', href: '#' },
+    { name: 'General terms & conditions of sale', href: '#' },
+    { name: 'Data protection', href: '#' },
+    { name: 'Cookies', href: '#' },
+    { name: 'Legal notices ', href: '#' },
   ],
 };
 
@@ -96,4 +94,7 @@ export const categories = [
 
 /** Search */
 
-export const breadcrumbs = [{ id: 1, name: 'Search', href: '/search' }];
+export const breadcrumbs = [
+  { id: 0, name: 'Home', href: '/' },
+  { id: 1, name: 'Search', href: '/search' },
+];
