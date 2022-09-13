@@ -1,4 +1,5 @@
 import type { Hit } from 'instantsearch.js';
+import Image from 'next/image';
 
 import type { ProductItem } from '../types';
 
@@ -9,11 +10,13 @@ export type TrendingItemProps = {
 export function TrendingItem({ item }: TrendingItemProps) {
   return (
     <div className="group relative">
-      <div>
-        <img
+      <div className="flex justify-center">
+        <Image
           src={item.image1}
           alt={item.title}
           className="w-full h-full object-center object-cover"
+          width={128}
+          height={128}
         />
       </div>
       <h3 className="mt-4 text-sm text-gray-700 truncate">
