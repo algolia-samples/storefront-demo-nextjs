@@ -144,7 +144,7 @@ export default function Home() {
                   Trending Products
                 </h2>
                 <a
-                  href="#"
+                  href="/search"
                   className="text-sm font-medium text-indigo-600 hover:text-indigo-500 block"
                 >
                   Browse now<span aria-hidden="true"> &rarr;</span>
