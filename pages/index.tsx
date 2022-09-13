@@ -132,6 +132,7 @@ export default function Home() {
           <TrendingItems
             recommendClient={recommendClient}
             indexName="test_FLAGSHIP_ECOM_recommend"
+            maxRecommendations={10}
             itemComponent={TrendingItem}
             view={HorizontalSlider}
             headerComponent={() => (
