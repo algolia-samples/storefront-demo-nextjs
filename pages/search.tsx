@@ -7,6 +7,7 @@ import { PlusIcon } from '@heroicons/react/24/solid';
 import {
   Configure,
   CurrentRefinements,
+  HierarchicalMenu,
   InfiniteHits,
   InstantSearch,
   RangeInput,
@@ -14,97 +15,25 @@ import {
   SortBy,
   useCurrentRefinements,
 } from 'react-instantsearch-hooks-web';
-import algoliasearch from 'algoliasearch/lite';
 
 import { Filter, FilterProps } from '../components/Filter';
 import { HitComponent } from '../components/HitComponent';
 
 import { breadcrumbs } from '../mock';
-
-const searchClient = algoliasearch(
-  'latency',
-  'b9df6a359f9fd849b653ee9e779775be'
-);
+import {
+  PRODUCTS_INDEX,
+  PRODUCTS_PRICE_ASC_INDEX,
+  PRODUCTS_PRICE_DESC_INDEX,
+  searchClient,
+} from '../utils';
 
 const FILTER_LABEL_MAP: Record<string, string> = {
   available_sizes: 'Size',
-  brand: 'Brand',
-  'color.original_name': 'Color',
-  'price.value': 'Price',
+  brand_label: 'Brand',
+  color: 'Color',
+  'categories.lvl0': 'Categories',
+  price_new: 'Price',
 };
-
-const refinementListClassNames: Parameters<
-  typeof RefinementList
->[0]['classNames'] = {
-  list: 'pt-6 space-y-3',
-  item: 'flex items-center',
-  checkbox:
-    'h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500',
-  labelText: 'ml-3 text-sm text-gray-600',
-  count:
-    'ml-1.5 rounded bg-gray-200 py-0.5 px-1.5 text-xs font-semibold tabular-nums text-gray-700',
-};
-
-function NoFiltersLabel() {
-  const { canRefine } = useCurrentRefinements();
-  return (
-    (!canRefine && (
-      <p className="text-sm mx-7 mb-4 sm:mb-0 font-normal text-gray-400">
-        No active filters
-      </p>
-    )) ||
-    null
-  );
-}
-
-function Filters({ type }: Pick<FilterProps, 'type'>) {
-  return (
-    <>
-      <Filter header="Brand" type={type}>
-        <RefinementList
-          attribute="brand"
-          limit={8}
-          classNames={refinementListClassNames}
-        />
-      </Filter>
-      <Filter header="Color" type={type} className="pt-10">
-        <RefinementList
-          attribute="color.original_name"
-          limit={8}
-          transformItems={(items) =>
-            items.map((item) => ({
-              ...item,
-              label:
-                item.label.slice(0, 1).toLocaleUpperCase() +
-                item.label.slice(1),
-            }))
-          }
-          classNames={refinementListClassNames}
-        />
-      </Filter>
-      <Filter header="Size" type={type} className="pt-10">
-        <RefinementList
-          attribute="available_sizes"
-          limit={8}
-          classNames={refinementListClassNames}
-        />
-      </Filter>
-      <Filter header="Price range" type={type} className="pt-10">
-        <RangeInput
-          attribute="price.value"
-          classNames={{
-            form: 'pt-6 flex space-x-4 justify-between',
-            input:
-              'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
-            separator: 'self-center text-sm font-medium text-gray-500',
-            submit:
-              'rounded-md bg-gray-200 px-4 text-sm font-medium text-gray-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50',
-          }}
-        />
-      </Filter>
-    </>
-  );
-}
 
 export default function Search() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -119,7 +48,7 @@ export default function Search() {
 
       <InstantSearch
         searchClient={searchClient}
-        indexName="PROD_pwa_ecom_ui_template_products"
+        indexName={PRODUCTS_INDEX}
         routing={true}
       >
         <Configure hitsPerPage={9} />
@@ -213,15 +142,15 @@ export default function Search() {
                 items={[
                   {
                     label: 'Sort by relevance',
-                    value: 'PROD_pwa_ecom_ui_template_products',
+                    value: PRODUCTS_INDEX,
                   },
                   {
                     label: 'Sort by price (low to high)',
-                    value: 'PROD_pwa_ecom_ui_template_products_price_asc',
+                    value: PRODUCTS_PRICE_ASC_INDEX,
                   },
                   {
                     label: 'Sort by price (high to low)',
-                    value: 'PROD_pwa_ecom_ui_template_products_price_desc',
+                    value: PRODUCTS_PRICE_DESC_INDEX,
                   },
                 ]}
                 classNames={{
@@ -310,6 +239,83 @@ export default function Search() {
           </div>
         </div>
       </InstantSearch>
+    </>
+  );
+}
+
+function NoFiltersLabel() {
+  const { canRefine } = useCurrentRefinements();
+
+  return (
+    (!canRefine && (
+      <p className="text-sm mx-7 mb-4 sm:mb-0 font-normal text-gray-400">
+        No active filters
+      </p>
+    )) ||
+    null
+  );
+}
+
+function Filters({ type }: Pick<FilterProps, 'type'>) {
+  return (
+    <>
+      <Filter header="Categories" type={type}>
+        <HierarchicalMenu
+          attributes={['categories.lvl0', 'categories.lvl1']}
+          limit={8}
+          classNames={{
+            root: 'pt-6 -ml-4',
+            list: 'ml-4 block space-y-3',
+            item: 'space-y-3',
+            link: 'block text-sm text-gray-600',
+            count:
+              'ml-1.5 rounded bg-gray-200 py-0.5 px-1.5 text-xs font-semibold tabular-nums text-gray-700',
+          }}
+        />
+      </Filter>
+      <Filter header="Brand" type={type} className="pt-10">
+        <RefinementList
+          attribute="brand_label"
+          limit={8}
+          classNames={{
+            list: 'pt-6 space-y-3',
+            item: 'flex items-center',
+            checkbox:
+              'h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500',
+            labelText: 'ml-3 text-sm text-gray-600',
+            count:
+              'ml-1.5 rounded bg-gray-200 py-0.5 px-1.5 text-xs font-semibold tabular-nums text-gray-700',
+          }}
+        />
+      </Filter>
+      <Filter header="Color" type={type} className="pt-10">
+        <RefinementList
+          attribute="color"
+          limit={8}
+          classNames={{
+            list: 'pt-6 space-y-3',
+            item: 'flex items-center',
+            checkbox:
+              'h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500',
+            labelText: 'ml-3 text-sm text-gray-600',
+            count:
+              'ml-1.5 rounded bg-gray-200 py-0.5 px-1.5 text-xs font-semibold tabular-nums text-gray-700',
+          }}
+        />
+      </Filter>
+      <Filter header="Price range" type={type} className="pt-10">
+        <RangeInput
+          attribute="price_new"
+          classNames={{
+            form: 'pt-6 flex space-x-4 justify-between',
+            input:
+              'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+            separator: 'self-center text-sm font-medium text-gray-500',
+            submit:
+              'rounded-md bg-gray-200 px-4 text-sm font-medium text-gray-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50',
+          }}
+        />
+      </Filter>
     </>
   );
 }

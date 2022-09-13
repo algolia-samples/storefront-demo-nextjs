@@ -1,6 +1,5 @@
 import recommend from '@algolia/recommend';
 
-const appId = 'XX85YRZZMV';
-const apiKey = '098f71f9e2267178bdfc08cc986d2999';
+import { APP_ID, SEARCH_API_KEY } from './constants';
 
-export const recommendClient = recommend(appId, apiKey);
+export const recommendClient = recommend(APP_ID, SEARCH_API_KEY);

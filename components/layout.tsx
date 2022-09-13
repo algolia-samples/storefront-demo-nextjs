@@ -14,7 +14,7 @@ import {
 import { createQuerySuggestionsPlugin } from '@algolia/autocomplete-plugin-query-suggestions';
 import { createLocalStorageRecentSearchesPlugin } from '@algolia/autocomplete-plugin-recent-searches';
 
-import { cx, searchClient } from '../utils';
+import { cx, PRODUCTS_QUERY_SUGGESTIONS_INDEX, searchClient } from '../utils';
 import { navigation, footerNavigation, perks } from '../mock';
 import { Autocomplete, AutocompleteItem } from '../components';
 import { useLazyRef } from '../hooks';
@@ -78,7 +78,7 @@ export default function Layout({ children }: PropsWithChildren) {
   const getQuerySuggestionsPlugin = useLazyRef(() =>
     createQuerySuggestionsPlugin({
       searchClient,
-      indexName: 'instant_search_demo_query_suggestions',
+      indexName: PRODUCTS_QUERY_SUGGESTIONS_INDEX,
       transformSource({ source, onTapAhead }) {
         return {
           ...source,
