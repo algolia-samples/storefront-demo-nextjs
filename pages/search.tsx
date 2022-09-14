@@ -19,8 +19,7 @@ import {
 } from 'react-instantsearch-hooks-web';
 import { singleIndex } from 'instantsearch.js/es/lib/stateMappings';
 
-import { Filter, FilterProps } from '../components/Filter';
-import { HitComponent } from '../components/HitComponent';
+import { Filter, FilterProps, HitComponent } from '../components';
 import { breadcrumbs } from '../data';
 import {
   extractColorFacet,
