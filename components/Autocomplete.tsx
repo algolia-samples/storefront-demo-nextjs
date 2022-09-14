@@ -1,6 +1,8 @@
-import { autocomplete, AutocompleteOptions } from '@algolia/autocomplete-js';
+import { autocomplete } from '@algolia/autocomplete-js';
 import React, { createElement, Fragment, useEffect, useRef } from 'react';
 import { createRoot, Root } from 'react-dom/client';
+
+import type { AutocompleteOptions } from '@algolia/autocomplete-js';
 
 export function Autocomplete<TItem extends Record<string, unknown>>(
   options: Partial<AutocompleteOptions<TItem>> &

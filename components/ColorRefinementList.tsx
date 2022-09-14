@@ -1,10 +1,9 @@
 import { CheckIcon } from '@heroicons/react/24/outline';
-import {
-  RefinementListProps,
-  useRefinementList,
-} from 'react-instantsearch-hooks-web';
+import { useRefinementList } from 'react-instantsearch-hooks-web';
 
 import { cx, extractColorFacet } from '../utils';
+
+import type { RefinementListProps } from 'react-instantsearch-hooks-web';
 
 type ColorRefinementListProps = RefinementListProps & {
   classNames: Pick<RefinementListProps, 'classNames'> &
