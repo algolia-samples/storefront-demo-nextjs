@@ -128,28 +128,7 @@ export default function Home() {
 
       <section aria-labelledby="trending-heading">
         <div className="max-w-7xl mx-auto py-24 px-4 sm:px-6 sm:py-32 lg:pt-32 lg:px-8">
-          <TrendingItems
-            recommendClient={recommendClient}
-            indexName={PRODUCTS_INDEX}
-            maxRecommendations={10}
-            itemComponent={TrendingItem}
-            view={HorizontalSlider}
-            headerComponent={() => (
-              <div className="flex items-center justify-between mb-4">
-                <h2
-                  id="trending-heading"
-                  className="text-2xl font-bold tracking-tight text-gray-900"
-                >
-                  Trending Products
-                </h2>
-                <Link href="/search">
-                  <a className="text-sm font-medium text-indigo-600 hover:text-indigo-500 block">
-                    Browse now<span aria-hidden="true"> &rarr;</span>
-                  </a>
-                </Link>
-              </div>
-            )}
-          />
+          {/* Trending Items */}
         </div>
       </section>
     </>
