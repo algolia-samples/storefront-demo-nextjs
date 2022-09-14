@@ -14,7 +14,9 @@ import {
   RefinementList,
   SortBy,
   useCurrentRefinements,
+  useSearchBox,
 } from 'react-instantsearch-hooks-web';
+import { singleIndex } from 'instantsearch.js/es/lib/stateMappings';
 
 import { Filter, FilterProps } from '../components/Filter';
 import { HitComponent } from '../components/HitComponent';
@@ -27,6 +29,7 @@ import {
   searchClient,
 } from '../utils';
 import { ColorRefinementList } from '../components';
+import { useRouter } from 'next/router';
 
 const FILTER_LABEL_MAP: Record<string, string> = {
   available_sizes: 'Size',
@@ -38,6 +41,7 @@ const FILTER_LABEL_MAP: Record<string, string> = {
 
 export default function Search() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <>
@@ -50,9 +54,11 @@ export default function Search() {
       <InstantSearch
         searchClient={searchClient}
         indexName={PRODUCTS_INDEX}
-        routing={true}
+        routing={{ stateMapping: singleIndex(PRODUCTS_INDEX) }}
+        key={(router.query.query as string) || ''}
       >
         <Configure hitsPerPage={9} />
+        <VirtualSearchBox />
         <Dialog
           as="div"
           className="relative z-40 lg:hidden"
@@ -312,4 +318,10 @@ function Filters({ type }: Pick<FilterProps, 'type'>) {
       </Filter>
     </>
   );
+}
+
+function VirtualSearchBox() {
+  useSearchBox();
+
+  return null;
 }
