@@ -1,4 +1,4 @@
-import React, { Fragment, PropsWithChildren, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -15,12 +15,17 @@ import {
 import { createQuerySuggestionsPlugin } from '@algolia/autocomplete-plugin-query-suggestions';
 import { createLocalStorageRecentSearchesPlugin } from '@algolia/autocomplete-plugin-recent-searches';
 
-import { PRODUCTS_QUERY_SUGGESTIONS_INDEX, searchClient } from '../utils';
+import { searchClient } from '../utils';
 import { navigation, footerNavigation, perks } from '../data';
-import { Autocomplete, AutocompleteItem } from '../components';
+import {
+  Autocomplete,
+  AutocompleteItem,
+  AutocompleteItemAction,
+} from '../components';
 import { useLazyRef } from '../hooks';
+import { PRODUCTS_QUERY_SUGGESTIONS_INDEX } from '../constants';
 
-export function Main({ children }: PropsWithChildren) {
+export function Main({ children }: React.PropsWithChildren) {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const getRecentSearchesPlugin = useLazyRef(() =>
@@ -36,38 +41,33 @@ export function Main({ children }: PropsWithChildren) {
                 <AutocompleteItem
                   router={router}
                   href={`/search/?query=${item.label}`}
-                >
-                  <AutocompleteItem.Content>
-                    <AutocompleteItem.Icon icon={ClockIcon} />
-                    <span>
-                      <components.ReverseHighlight
-                        hit={item}
-                        attribute="label"
+                  icon={ClockIcon}
+                  actions={
+                    <>
+                      <AutocompleteItemAction
+                        icon={TrashIcon}
+                        title="Remove this search"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+
+                          onRemove(item.label);
+                        }}
                       />
-                    </span>
-                  </AutocompleteItem.Content>
-                  <AutocompleteItem.Actions>
-                    <AutocompleteItem.Action
-                      icon={TrashIcon}
-                      title="Remove this search"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
+                      <AutocompleteItemAction
+                        icon={ArrowUpLeftIcon}
+                        title={`Fill query with "${item.label}"`}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
 
-                        onRemove(item.label);
-                      }}
-                    />
-                    <AutocompleteItem.Action
-                      icon={ArrowUpLeftIcon}
-                      title={`Fill query with "${item.label}"`}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-
-                        onTapAhead(item);
-                      }}
-                    />
-                  </AutocompleteItem.Actions>
+                          onTapAhead(item);
+                        }}
+                      />
+                    </>
+                  }
+                >
+                  <components.ReverseHighlight hit={item} attribute="label" />
                 </AutocompleteItem>
               );
             },
@@ -93,18 +93,9 @@ export function Main({ children }: PropsWithChildren) {
                 <AutocompleteItem
                   router={router}
                   href={`/search/?query=${item.query}`}
-                >
-                  <AutocompleteItem.Content>
-                    <AutocompleteItem.Icon icon={MagnifyingGlassIcon} />
-                    <span>
-                      <components.ReverseHighlight
-                        hit={item}
-                        attribute="query"
-                      />
-                    </span>
-                  </AutocompleteItem.Content>
-                  <AutocompleteItem.Actions>
-                    <AutocompleteItem.Action
+                  icon={MagnifyingGlassIcon}
+                  actions={
+                    <AutocompleteItemAction
                       icon={ArrowUpLeftIcon}
                       title={`Fill query with "${item.query}"`}
                       onClick={(event) => {
@@ -114,7 +105,9 @@ export function Main({ children }: PropsWithChildren) {
                         onTapAhead(item);
                       }}
                     />
-                  </AutocompleteItem.Actions>
+                  }
+                >
+                  <components.ReverseHighlight hit={item} attribute="query" />
                 </AutocompleteItem>
               );
             },
@@ -247,6 +240,7 @@ export function Main({ children }: PropsWithChildren) {
                 </Link>
 
                 <div className="flex-1 flex items-center justify-end">
+                  {/* Autocomplete */}
                   <Autocomplete
                     initialState={{
                       query: (router.query.query as string) || '',

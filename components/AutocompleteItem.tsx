@@ -5,12 +5,20 @@ import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 import { cx } from '../utils';
 
+type IconComponent = (props: React.ComponentProps<'svg'>) => JSX.Element;
+
 export function AutocompleteItem({
   children,
   router,
+  icon: Icon,
+  actions,
   ...props
 }: React.PropsWithChildren<
-  React.ComponentProps<'a'> & { router: NextRouter }
+  React.ComponentProps<'a'> & {
+    router: NextRouter;
+    icon: IconComponent;
+    actions: JSX.Element;
+  }
 >) {
   return (
     <RouterContext.Provider value={router}>
@@ -22,38 +30,24 @@ export function AutocompleteItem({
             props.className
           )}
         >
-          {children}
+          <div className="flex items-center">
+            <div className="text-gray-400 py-3 lg:py-2.5 pl-5 lg:pl-3 pr-3 lg:pr-2 flex items-center justify-center">
+              <Icon className="w-5 h-5 stroke-2" />
+            </div>
+            <span>{children}</span>
+          </div>
+          <div className="flex mr-1.5">{actions}</div>
         </a>
       </Link>
     </RouterContext.Provider>
   );
 }
 
-function AutocompleteItemContent({ children }: React.PropsWithChildren) {
-  return <div className="flex items-center">{children}</div>;
-}
-
-type AutocompleteItemIconProps = {
-  icon(props: React.ComponentProps<'svg'>): JSX.Element;
-};
-
-function AutocompleteItemIcon({ icon: Icon }: AutocompleteItemIconProps) {
-  return (
-    <div className="text-gray-400 py-3 lg:py-2.5 pl-5 lg:pl-3 pr-3 lg:pr-2 flex items-center justify-center">
-      <Icon className="w-5 h-5 stroke-2" />
-    </div>
-  );
-}
-
-function AutocompleteItemActions({ children }: React.PropsWithChildren) {
-  return <div className="flex mr-1.5">{children}</div>;
-}
-
 type AutocompleteItemActionProps = {
-  icon(props: React.ComponentProps<'svg'>): JSX.Element;
+  icon: IconComponent;
 } & React.ComponentProps<'button'>;
 
-function AutocompleteItemAction({
+export function AutocompleteItemAction({
   children,
   icon: Icon,
   ...props
@@ -67,11 +61,3 @@ function AutocompleteItemAction({
     </button>
   );
 }
-
-AutocompleteItem.Content = AutocompleteItemContent;
-
-AutocompleteItem.Icon = AutocompleteItemIcon;
-
-AutocompleteItem.Actions = AutocompleteItemActions;
-
-AutocompleteItem.Action = AutocompleteItemAction;
