@@ -26,13 +26,12 @@ import {
   ColorRefinementList,
 } from '../components';
 import { breadcrumbs } from '../data';
+import { extractColorFacet, searchClient } from '../utils';
 import {
-  extractColorFacet,
   PRODUCTS_INDEX,
   PRODUCTS_PRICE_ASC_INDEX,
   PRODUCTS_PRICE_DESC_INDEX,
-  searchClient,
-} from '../utils';
+} from '../constants';
 
 const FILTER_LABEL_MAP: Record<string, string> = {
   available_sizes: 'Size',

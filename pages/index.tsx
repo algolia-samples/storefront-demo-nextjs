@@ -5,12 +5,13 @@ import Image from 'next/image';
 
 import { TrendingItem } from '../components';
 import { categories } from '../data';
-import { cx, PRODUCTS_INDEX, recommendClient } from '../utils';
+import { cx, recommendClient } from '../utils';
 
 import heroImage from '../public/images/mark-chan-489jbTi51sg-unsplash-optimized.jpg';
 
 import '@algolia/ui-components-horizontal-slider-theme';
 import Link from 'next/link';
+import { PRODUCTS_INDEX } from '../constants';
 
 export default function Home() {
   return (
