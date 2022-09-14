@@ -20,7 +20,7 @@ import { navigation, footerNavigation, perks } from '../data';
 import { Autocomplete, AutocompleteItem } from '../components';
 import { useLazyRef } from '../hooks';
 
-export function Layout({ children }: PropsWithChildren) {
+export function Main({ children }: PropsWithChildren) {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const getRecentSearchesPlugin = useLazyRef(() =>
