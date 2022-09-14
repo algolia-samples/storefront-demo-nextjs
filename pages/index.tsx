@@ -10,6 +10,7 @@ import { cx, PRODUCTS_INDEX, recommendClient } from '../utils';
 import heroImage from '../public/images/mark-chan-489jbTi51sg-unsplash-optimized.jpg';
 
 import '@algolia/ui-components-horizontal-slider-theme';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -143,12 +144,11 @@ export default function Home() {
                 >
                   Trending Products
                 </h2>
-                <a
-                  href="/search"
-                  className="text-sm font-medium text-indigo-600 hover:text-indigo-500 block"
-                >
-                  Browse now<span aria-hidden="true"> &rarr;</span>
-                </a>
+                <Link href="/search">
+                  <a className="text-sm font-medium text-indigo-600 hover:text-indigo-500 block">
+                    Browse now<span aria-hidden="true"> &rarr;</span>
+                  </a>
+                </Link>
               </div>
             )}
           />

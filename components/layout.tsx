@@ -18,6 +18,7 @@ import { cx, PRODUCTS_QUERY_SUGGESTIONS_INDEX, searchClient } from '../utils';
 import { navigation, footerNavigation, perks } from '../mock';
 import { Autocomplete, AutocompleteItem } from '../components';
 import { useLazyRef } from '../hooks';
+import Image from 'next/image';
 
 export default function Layout({ children }: PropsWithChildren) {
   const router = useRouter();
@@ -154,7 +155,7 @@ export default function Layout({ children }: PropsWithChildren) {
               leaveTo="-translate-x-full"
             >
               <Dialog.Panel className="relative max-w-xs w-full bg-white shadow-xl pb-12 flex flex-col overflow-y-auto">
-                <div className="px-4 pt-5 pb-2 flex">
+                <div className="px-4 py-5 flex">
                   <button
                     type="button"
                     className="-m-2 p-2 rounded-md inline-flex items-center justify-center text-gray-400"
@@ -164,66 +165,6 @@ export default function Layout({ children }: PropsWithChildren) {
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
-
-                <Tab.Group as="div" className="mt-2">
-                  <div className="border-b border-gray-200">
-                    <Tab.List className="-mb-px flex px-4 space-x-8">
-                      {navigation.categories.map((category) => (
-                        <Tab
-                          key={category.name}
-                          className={({ selected }) =>
-                            cx(
-                              selected
-                                ? 'text-indigo-600 border-indigo-600'
-                                : 'text-gray-900 border-transparent',
-                              'flex-1 whitespace-nowrap py-4 px-1 border-b-2 text-base font-medium'
-                            )
-                          }
-                        >
-                          {category.name}
-                        </Tab>
-                      ))}
-                    </Tab.List>
-                  </div>
-                  <Tab.Panels as={Fragment}>
-                    {navigation.categories.map((category) => (
-                      <Tab.Panel
-                        key={category.name}
-                        className="px-4 py-6 space-y-12"
-                      >
-                        <div className="grid grid-cols-2 gap-x-4 gap-y-10">
-                          {category.featured.map((item) => (
-                            <div key={item.name} className="group relative">
-                              <div className="aspect-w-1 aspect-h-1 rounded-md bg-gray-100 overflow-hidden group-hover:opacity-75">
-                                <img
-                                  src={item.imageSrc}
-                                  alt={item.imageAlt}
-                                  className="object-center object-cover"
-                                />
-                              </div>
-                              <a
-                                href={item.href}
-                                className="mt-6 block text-sm font-medium text-gray-900"
-                              >
-                                <span
-                                  className="absolute z-10 inset-0"
-                                  aria-hidden="true"
-                                />
-                                {item.name}
-                              </a>
-                              <p
-                                aria-hidden="true"
-                                className="mt-1 text-sm text-gray-500"
-                              >
-                                Shop now
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </Tab.Panel>
-                    ))}
-                  </Tab.Panels>
-                </Tab.Group>
 
                 <div className="border-t border-gray-200 py-6 px-4 space-y-6">
                   {navigation.pages.map((page) => (
@@ -251,12 +192,14 @@ export default function Layout({ children }: PropsWithChildren) {
                 <div className="hidden h-full lg:flex lg:items-center">
                   <div className="hidden lg:flex-1 lg:flex lg:items-center mr-4">
                     <Link href="/">
-                      <a>
+                      <a className="flex items-center">
                         <span className="sr-only">Algolia Storefront</span>
-                        <img
+                        <Image
                           className="h-8 w-auto"
-                          src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
+                          src="/images/algolia-logo.png"
                           alt=""
+                          width={30}
+                          height={30}
                         />
                       </a>
                     </Link>
@@ -265,101 +208,6 @@ export default function Layout({ children }: PropsWithChildren) {
                   <div className="hidden h-full lg:flex">
                     <Popover.Group className="px-4 bottom-0 inset-x-0">
                       <div className="h-full flex justify-center space-x-8">
-                        {navigation.categories.map((category) => (
-                          <Popover key={category.name} className="flex">
-                            {({ open }) => (
-                              <>
-                                <div className="relative flex">
-                                  <Popover.Button
-                                    className={cx(
-                                      open
-                                        ? 'text-indigo-600'
-                                        : 'text-gray-700 hover:text-gray-800',
-                                      'relative flex items-center justify-center transition-colors ease-out duration-200 text-sm font-medium'
-                                    )}
-                                  >
-                                    {category.name}
-                                    <span
-                                      className={cx(
-                                        open ? 'bg-indigo-600' : '',
-                                        'absolute z-20 -bottom-px inset-x-0 h-0.5 transition ease-out duration-200'
-                                      )}
-                                      aria-hidden="true"
-                                    />
-                                  </Popover.Button>
-                                </div>
-
-                                <Transition
-                                  as={Fragment}
-                                  enter="transition ease-out duration-200"
-                                  enterFrom="opacity-0"
-                                  enterTo="opacity-100"
-                                  leave="transition ease-in duration-150"
-                                  leaveFrom="opacity-100"
-                                  leaveTo="opacity-0"
-                                >
-                                  <Popover.Panel className="absolute z-10 top-full inset-x-0 bg-white text-sm text-gray-500">
-                                    <div
-                                      className="absolute inset-0 top-1/2 bg-white shadow"
-                                      aria-hidden="true"
-                                    />
-                                    <div
-                                      className="absolute inset-0 top-0 h-px max-w-7xl mx-auto px-8"
-                                      aria-hidden="true"
-                                    >
-                                      <div
-                                        className={cx(
-                                          open
-                                            ? 'bg-gray-200'
-                                            : 'bg-transparent',
-                                          'w-full h-px transition-colors ease-out duration-200'
-                                        )}
-                                      />
-                                    </div>
-
-                                    <div className="relative">
-                                      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                        <div className="grid grid-cols-4 gap-y-10 gap-x-8 py-16">
-                                          {category.featured.map((item) => (
-                                            <div
-                                              key={item.name}
-                                              className="group relative"
-                                            >
-                                              <div className="aspect-w-1 aspect-h-1 rounded-md bg-gray-100 overflow-hidden group-hover:opacity-75">
-                                                <img
-                                                  src={item.imageSrc}
-                                                  alt={item.imageAlt}
-                                                  className="object-center object-cover"
-                                                />
-                                              </div>
-                                              <a
-                                                href={item.href}
-                                                className="mt-4 block font-medium text-gray-900"
-                                              >
-                                                <span
-                                                  className="absolute z-10 inset-0"
-                                                  aria-hidden="true"
-                                                />
-                                                {item.name}
-                                              </a>
-                                              <p
-                                                aria-hidden="true"
-                                                className="mt-1"
-                                              >
-                                                Shop now
-                                              </p>
-                                            </div>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </Popover.Panel>
-                                </Transition>
-                              </>
-                            )}
-                          </Popover>
-                        ))}
-
                         {navigation.pages.map((page) => (
                           <a
                             key={page.name}
@@ -386,12 +234,14 @@ export default function Layout({ children }: PropsWithChildren) {
                 </div>
 
                 <Link href="/">
-                  <a className="lg:hidden">
+                  <a className="lg:hidden flex items-center">
                     <span className="sr-only">Algolia Storefront</span>
-                    <img
-                      src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                      alt=""
+                    <Image
                       className="h-8 w-auto"
+                      src="/images/algolia-logo.png"
+                      alt=""
+                      width={30}
+                      height={30}
                     />
                   </a>
                 </Link>
@@ -483,10 +333,12 @@ export default function Layout({ children }: PropsWithChildren) {
               >
                 <div className="md:flex-shrink-0">
                   <div className="flow-root">
-                    <img
+                    <Image
                       className="-my-1 h-24 w-auto mx-auto"
                       src={perk.imageUrl}
                       alt=""
+                      width={112}
+                      height={96}
                     />
                   </div>
                 </div>
@@ -512,10 +364,12 @@ export default function Layout({ children }: PropsWithChildren) {
           <div className="border-t border-gray-200 py-20">
             <div className="grid grid-cols-1 md:grid-cols-12 md:grid-flow-col md:gap-x-8 md:gap-y-16 md:auto-rows-min">
               <div className="col-span-1 md:col-span-2 lg:row-start-1 lg:col-start-1">
-                <img
-                  src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                  alt=""
+                <Image
                   className="h-8 w-auto"
+                  src="/images/algolia-logo.png"
+                  alt=""
+                  width={25}
+                  height={25}
                 />
               </div>
 
