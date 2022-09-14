@@ -27,6 +27,21 @@ import { PRODUCTS_QUERY_SUGGESTIONS_INDEX } from '../constants';
 
 export function Main({ children }: React.PropsWithChildren) {
   const router = useRouter();
+  const breadcrumbs = router.pathname
+    .split('/')
+    .filter(Boolean)
+    .reduce(
+      (acc, chunk) =>
+        acc.concat({
+          label: chunk,
+          href: acc
+            .map(({ href }) => href)
+            .concat(chunk)
+            .join('/'),
+        }),
+      [{ label: 'Home', href: '' }]
+    );
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const getRecentSearchesPlugin = useLazyRef(() =>
     createLocalStorageRecentSearchesPlugin({
@@ -177,7 +192,7 @@ export function Main({ children }: React.PropsWithChildren) {
         </Dialog>
       </Transition.Root>
 
-      <header className="relative">
+      <header className="sticky top-0 z-10">
         <nav aria-label="Top">
           <div className="bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -306,6 +321,41 @@ export function Main({ children }: React.PropsWithChildren) {
             </div>
           </div>
         </nav>
+        {breadcrumbs.length > 1 && (
+          <div className="border-y border-gray-200 bg-white">
+            <nav
+              aria-label="Breadcrumb"
+              className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+            >
+              <ol role="list" className="flex items-center space-x-4 py-4">
+                {breadcrumbs.map(({ label, href }, index) => (
+                  <li key={href}>
+                    <div className="flex items-center">
+                      {index > 0 && (
+                        <svg
+                          viewBox="0 0 6 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                          className="mr-4 h-5 w-auto text-gray-300"
+                        >
+                          <path
+                            d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      )}
+                      <Link href={href || '/'}>
+                        <a className="text-sm font-medium text-gray-900 capitalize">
+                          {label}
+                        </a>
+                      </Link>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </div>
+        )}
       </header>
 
       <main>{children}</main>

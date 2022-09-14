@@ -91,10 +91,3 @@ export const categories = [
     className: 'translate-y-8',
   },
 ];
-
-/** Search */
-
-export const breadcrumbs = [
-  { id: 0, name: 'Home', href: '/' },
-  { id: 1, name: 'Search', href: '/search' },
-];
