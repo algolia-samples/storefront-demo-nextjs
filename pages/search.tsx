@@ -19,7 +19,12 @@ import {
 } from 'react-instantsearch-hooks-web';
 import { singleIndex } from 'instantsearch.js/es/lib/stateMappings';
 
-import { Filter, FilterProps, HitComponent } from '../components';
+import {
+  Filter,
+  FilterProps,
+  HitComponent,
+  ColorRefinementList,
+} from '../components';
 import { breadcrumbs } from '../data';
 import {
   extractColorFacet,
@@ -28,7 +33,6 @@ import {
   PRODUCTS_PRICE_DESC_INDEX,
   searchClient,
 } from '../utils';
-import { ColorRefinementList } from '../components';
 
 const FILTER_LABEL_MAP: Record<string, string> = {
   available_sizes: 'Size',
