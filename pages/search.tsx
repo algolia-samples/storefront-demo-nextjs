@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -25,7 +24,6 @@ import {
   HitComponent,
   ColorRefinementList,
 } from '../components';
-import { breadcrumbs } from '../data';
 import { extractColorFacet, searchClient } from '../utils';
 import {
   PRODUCTS_INDEX,
