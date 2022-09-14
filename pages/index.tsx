@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import { TrendingItem } from '../components';
 import { categories } from '../mock';
-import { cx, recommendClient } from '../utils';
+import { cx, PRODUCTS_INDEX, recommendClient } from '../utils';
 
 import heroImage from '../public/images/mark-chan-489jbTi51sg-unsplash-optimized.jpg';
 
@@ -131,7 +131,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto py-24 px-4 sm:px-6 sm:py-32 lg:pt-32 lg:px-8">
           <TrendingItems
             recommendClient={recommendClient}
-            indexName="test_FLAGSHIP_ECOM_recommend"
+            indexName={PRODUCTS_INDEX}
             maxRecommendations={10}
             itemComponent={TrendingItem}
             view={HorizontalSlider}

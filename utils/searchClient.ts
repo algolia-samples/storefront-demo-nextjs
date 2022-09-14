@@ -1,6 +1,5 @@
 import algoliasearch from 'algoliasearch';
 
-const appId = 'latency';
-const apiKey = '6be0576ff61c053d5f9a3225e2a90f76';
+import { APP_ID, SEARCH_API_KEY } from './constants';
 
-export const searchClient = algoliasearch(appId, apiKey);
+export const searchClient = algoliasearch(APP_ID, SEARCH_API_KEY);
