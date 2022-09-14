@@ -53,6 +53,40 @@ export default function Search() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <div className="border-y border-gray-200">
+        <nav
+          aria-label="Breadcrumb"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+        >
+          <ol role="list" className="flex items-center space-x-4 py-4">
+            {breadcrumbs.map((breadcrumb, index) => (
+              <li key={breadcrumb.id}>
+                <div className="flex items-center">
+                  {index > 0 && (
+                    <svg
+                      viewBox="0 0 6 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                      className="mr-4 h-5 w-auto text-gray-300"
+                    >
+                      <path
+                        d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  )}
+                  <Link href={breadcrumb.href}>
+                    <a className="text-sm font-medium text-gray-900">
+                      {breadcrumb.name}
+                    </a>
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </div>
+
       <InstantSearch
         searchClient={searchClient}
         indexName={PRODUCTS_INDEX}
@@ -90,40 +124,6 @@ export default function Search() {
             </Dialog.Panel>
           </div>
         </Dialog>
-
-        <div className="border-y border-gray-200">
-          <nav
-            aria-label="Breadcrumb"
-            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-          >
-            <ol role="list" className="flex items-center space-x-4 py-4">
-              {breadcrumbs.map((breadcrumb, index) => (
-                <li key={breadcrumb.id}>
-                  <div className="flex items-center">
-                    {index > 0 && (
-                      <svg
-                        viewBox="0 0 6 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                        className="mr-4 h-5 w-auto text-gray-300"
-                      >
-                        <path
-                          d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    )}
-                    <Link href={breadcrumb.href}>
-                      <a className="text-sm font-medium text-gray-900">
-                        {breadcrumb.name}
-                      </a>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </nav>
-        </div>
 
         <div className="bg-gray-100 border-t border-gray-200">
           <div className="sm:flex sm:items-center mx-auto sm:px-6 lg:px-8 max-w-7xl">
