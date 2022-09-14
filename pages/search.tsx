@@ -20,16 +20,18 @@ import { Filter, FilterProps } from '../components/Filter';
 import { HitComponent } from '../components/HitComponent';
 import { breadcrumbs } from '../data';
 import {
+  extractColorFacet,
   PRODUCTS_INDEX,
   PRODUCTS_PRICE_ASC_INDEX,
   PRODUCTS_PRICE_DESC_INDEX,
   searchClient,
 } from '../utils';
+import { ColorRefinementList } from '../components';
 
 const FILTER_LABEL_MAP: Record<string, string> = {
   available_sizes: 'Size',
   brand_label: 'Brand',
-  color: 'Color',
+  color_hex: 'Color',
   'categories.lvl0': 'Categories',
   price_new: 'Price',
 };
@@ -150,10 +152,17 @@ export default function Search() {
               <NoFiltersLabel />
               <CurrentRefinements
                 transformItems={(items) =>
-                  items.map((item) => ({
-                    ...item,
-                    label: FILTER_LABEL_MAP[item.label] || item.label,
-                  }))
+                  items.map((item) => {
+                    return {
+                      ...item,
+                      label: FILTER_LABEL_MAP[item.label] || item.label,
+                      refinements: item.refinements.map((refinement) => {
+                        const { label } = extractColorFacet(refinement.label);
+
+                        return { ...refinement, label };
+                      }),
+                    };
+                  })
                 }
                 classNames={{
                   root: 'relative before:content-[""] before:absolute before:w-6 before:h-full before:bg-gradient-to-r before:from-gray-100 after:content-[""] after:absolute after:w-6 after:h-full after:top-0 after:right-0 after:bg-gradient-to-l after:from-gray-100',
@@ -260,6 +269,7 @@ function Filters({ type }: Pick<FilterProps, 'type'>) {
           classNames={{
             list: 'pt-6 space-y-4 lg:space-y-3',
             item: 'flex items-center',
+            selectedItem: 'font-semibold',
             checkbox:
               'h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500',
             labelText: 'ml-3 text-sm text-gray-600',
@@ -269,14 +279,18 @@ function Filters({ type }: Pick<FilterProps, 'type'>) {
         />
       </Filter>
       <Filter header="Color" type={type} className="pt-10">
-        <RefinementList
-          attribute="color"
+        <ColorRefinementList
+          attribute="color_hex"
           limit={8}
           classNames={{
             list: 'pt-6 space-y-4 lg:space-y-3',
             item: 'flex items-center',
-            checkbox:
-              'h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500',
+            selectedItem: 'font-semibold',
+            label: 'flex items-center',
+            checkbox: 'hidden',
+            swatch:
+              'w-8 h-8 flex items-center justify-center rounded-full cursor-pointer checked:bg-gray-300 ring-1 ring-black/10 ring-inset',
+            swatchIcon: 'h-4 w-4 stroke-2 mix-blend-difference text-white',
             labelText: 'ml-3 text-sm text-gray-600',
             count:
               'ml-1.5 rounded bg-gray-200 py-0.5 px-1.5 text-xs font-semibold tabular-nums text-gray-700',
