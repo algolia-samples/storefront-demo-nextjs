@@ -43,14 +43,17 @@ export function ColorRefinementList({
     <div
       {...props}
       className={cx(
-        'ais-RefinementList',
+        'ais-ColorRefinementList',
         classNames.root,
         !canRefine &&
-          cx('ais-RefinementList--noRefinement', classNames.noRefinementRoot),
+          cx(
+            'ais-ColorRefinementList--noRefinement',
+            classNames.noRefinementRoot
+          ),
         className
       )}
     >
-      <ul className={cx('ais-RefinementList-list', classNames.list)}>
+      <ul className={cx('ais-ColorRefinementList-list', classNames.list)}>
         {items.map((item) => {
           const { label, color } = extractColorFacet(item.label);
 
@@ -58,22 +61,25 @@ export function ColorRefinementList({
             <li
               key={item.value}
               className={cx(
-                'ais-RefinementList-item',
+                'ais-ColorRefinementList-item',
                 classNames.item,
                 item.isRefined &&
                   cx(
-                    'ais-RefinementList-item--selected',
+                    'ais-ColorRefinementList-item--selected',
                     classNames.selectedItem
                   )
               )}
             >
               <label
-                className={cx('ais-RefinementList-label', classNames.label)}
+                className={cx(
+                  'ais-ColorRefinementList-label',
+                  classNames.label
+                )}
               >
                 <input
                   checked={item.isRefined}
                   className={cx(
-                    'ais-RefinementList-checkbox',
+                    'ais-ColorRefinementList-checkbox',
                     classNames.checkbox
                   )}
                   type="checkbox"
@@ -84,12 +90,15 @@ export function ColorRefinementList({
                   style={{
                     background: color.startsWith('#') ? color : `url(${color})`,
                   }}
-                  className={cx('ais-RefinementList-swatch', classNames.swatch)}
+                  className={cx(
+                    'ais-ColorRefinementList-swatch',
+                    classNames.swatch
+                  )}
                 >
                   {item.isRefined && (
                     <CheckIcon
                       className={cx(
-                        'ais-RefinementList-swatchIcon',
+                        'ais-ColorRefinementList-swatchIcon',
                         classNames.swatchIcon
                       )}
                     />
@@ -97,14 +106,17 @@ export function ColorRefinementList({
                 </div>
                 <span
                   className={cx(
-                    'ais-RefinementList-labelText',
+                    'ais-ColorRefinementList-labelText',
                     classNames.labelText
                   )}
                 >
                   {label}
                 </span>
                 <span
-                  className={cx('ais-RefinementList-count', classNames.count)}
+                  className={cx(
+                    'ais-ColorRefinementList-count',
+                    classNames.count
+                  )}
                 >
                   {item.count}
                 </span>
