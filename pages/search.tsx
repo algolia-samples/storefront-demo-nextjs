@@ -265,7 +265,7 @@ function Filters({ type }: Pick<FilterProps, 'type'>) {
             root: 'pt-6 -ml-4',
             list: 'ml-4 block space-y-4 lg:space-y-3',
             item: 'space-y-4 lg:space-y-3',
-            link: 'block text-sm text-gray-600',
+            link: 'block text-sm text-gray-600 cursor-pointer',
             count:
               'ml-1.5 rounded bg-gray-200 py-0.5 px-1.5 text-xs font-semibold tabular-nums text-gray-700',
           }}
@@ -278,9 +278,10 @@ function Filters({ type }: Pick<FilterProps, 'type'>) {
           classNames={{
             list: 'pt-6 space-y-4 lg:space-y-3',
             item: 'flex items-center',
+            label: 'cursor-pointer',
             selectedItem: 'font-semibold',
             checkbox:
-              'h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500',
+              'h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer',
             labelText: 'ml-3 text-sm text-gray-600',
             count:
               'ml-1.5 rounded bg-gray-200 py-0.5 px-1.5 text-xs font-semibold tabular-nums text-gray-700',
@@ -295,10 +296,10 @@ function Filters({ type }: Pick<FilterProps, 'type'>) {
             list: 'pt-6 space-y-4 lg:space-y-3',
             item: 'flex items-center',
             selectedItem: 'font-semibold',
-            label: 'flex items-center',
+            label: 'flex items-center cursor-pointer',
             checkbox: 'hidden',
             swatch:
-              'w-8 h-8 flex items-center justify-center rounded-full cursor-pointer checked:bg-gray-300 ring-1 ring-black/10 ring-inset',
+              'w-8 h-8 flex items-center justify-center rounded-full cursor-pointer checked:bg-gray-300 ring-1 ring-black/10 ring-inset cursor-pointer',
             swatchIcon: 'h-4 w-4 stroke-2 mix-blend-difference text-white',
             labelText: 'ml-3 text-sm text-gray-600',
             count:
