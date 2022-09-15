@@ -34,3 +34,5 @@ At [#AlgoliaDevCon](https://twitter.com/hashtag/AlgoliaDevCon) you'll experience
 - 500+ like-minded developers in the Algolia community
 
 Check out [algolia.com/devcon](https://www.algolia.com/devcon/) for more info.
+
+>**Disclaimer:** The product dataset presented in this demo is the property of [BackMarket.com](https://www.backmarket.com/) and has been kindly lent to Algolia for demo purposes only. No unauthorized use can be made of it for any purpose without explicit consent from [BackMarket.com](https://www.backmarket.com/).
